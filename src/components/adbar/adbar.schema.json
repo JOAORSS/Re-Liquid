@@ -1,0 +1,16 @@
+{
+  "name": "AdBar",
+  "max_blocks": 10,
+  "blocks": [],
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    }
+  ],
+  "presets": [
+    {
+      "name": "AdBar"
+    }
+  ]
+}

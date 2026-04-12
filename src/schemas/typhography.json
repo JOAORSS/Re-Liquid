@@ -1,0 +1,88 @@
+{
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Fonts"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_display",
+        "label": "Display / Heading font",
+        "default": "barlow_n5",
+        "info": "Used on headings, CTAs and labels"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body font",
+        "default": "barlow_n4",
+        "info": "Used on paragraphs, descriptions and meta text"      
+      },
+
+      {
+        "type": "header",
+        "content": "Font sizes"
+      },
+      {
+        "type": "range",
+        "id": "font_size_h1",
+        "label": "Product title (H1)",
+        "min": 24,
+        "max": 56,
+        "step": 1,
+        "unit": "px",
+        "default": 36
+      },
+      {
+        "type": "range",
+        "id": "font_size_h2",
+        "label": "Section heading (H2)",
+        "min": 18,
+        "max": 48,
+        "step": 1,
+        "unit": "px",
+        "default": 28
+      },
+      {
+        "type": "range",
+        "id": "font_size_h3",
+        "label": "Section title (H3)",
+        "min": 14,
+        "max": 36,
+        "step": 1,
+        "unit": "px",
+        "default": 22
+      },
+      {
+        "type": "range",
+        "id": "font_size_body",
+        "label": "Body text",
+        "min": 10,
+        "max": 20,
+        "step": 1,
+        "unit": "px",
+        "default": 13
+      },
+      {
+        "type": "range",
+        "id": "font_size_small",
+        "label": "Small / meta text",
+        "min": 8,
+        "max": 14,
+        "step": 1,
+        "unit": "px",
+        "default": 11
+      },
+      {
+        "type": "range",
+        "id": "font_size_price",
+        "label": "Price",
+        "min": 18,
+        "max": 48,
+        "step": 1,
+        "unit": "px",
+        "default": 28
+      }
+    ]
+  }

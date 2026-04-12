@@ -1,0 +1,17 @@
+{
+  "type": "announcement",
+  "name": "Announcement",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Texto do Anúncio",
+      "default": "Frete grátis para todo o Brasil"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    }
+  ]
+}
