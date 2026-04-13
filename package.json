@@ -10,7 +10,8 @@
     "build:schemas": "node scripts/build-schemas.js",
     "build:types": "node scripts/build-types.js",
     "watch:types": "node scripts/build-types.js --watch",
-    "build": "node scripts/build.js"
+    "build": "node scripts/build.js",
+    "watch": "node scripts/watch.js"
   },
   "dependencies": {
     "react": "^19.2.4",
