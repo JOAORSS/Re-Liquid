@@ -46,7 +46,8 @@ compiledComponents.forEach(name => {
   let jsContent = fs.readFileSync(path.join(DIST_DIR, `${name}.js`), 'utf8');
   
   jsContent = jsContent.replace(/['"`]\[\[LIQUID_([\s\S]*?)_LIQUID\]\]['"`]/g, '{{ $1 }}');
-  jsContent = jsContent.replace(/['"`]\[\[RAW_([\s\S]*?)_RAW\]\]['"`]/g, '$1');
+  jsContent = jsContent.replace(/['"`]\[\[RAW_([A-Za-z0-9+/=]+)_RAW\]\]['"`]/g, 
+                                (match, encoded) => Buffer.from(encoded, 'base64').toString('utf8'));
 
   let cssContent = '';
   let schemaContent = '{}';
@@ -93,36 +94,54 @@ compiledComponents.forEach(name => {
     }
   }
 
-  const liquidTemplate = `
-<div id="react-widget-{{ section.id }}" class="react-widget-${name.toLowerCase()}" data-settings='{{ section.settings | json | escape }}'></div>
+const liquidTemplate = ` 
 
-<style>
-${cssContent}
-</style>
+<div id="react-widget-{{ section.id }}" class="react-widget-${name.toLowerCase()}" data-settings='{{ section.settings | json | escape }}'></div> 
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  ${jsContent}
+<style> 
+${cssContent} 
+</style> 
 
-  const e=document.getElementById("react-widget-{{ section.id }}");
-  if(e&&window.React&&window.ReactDOM){
-    const t="${name}";
-    const n={
-      settings: {{ section.settings | json }},
-      blocks: [{%- for block in section.blocks -%}{"id": "{{ block.id }}","type": "{{ block.type }}","settings": {{ block.settings | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
-      id: "{{ section.id }}"
-    };
-    "function"==typeof window[t]&&window.ReactDOM.createRoot(e).render(window.React.createElement(window[t],n))
-  }
-});
-</script>
+<script> 
+  document.addEventListener("DOMContentLoaded", function() { 
+    ${jsContent} 
+    const e=document.getElementById("react-widget-{{ section.id }}"); 
+    if(e&&window.React&&window.ReactDOM){ 
+      const t="${name}"; 
+      const n={ 
+        settings: {{ section.settings | json }}, 
+        blocks: [{%- for block in section.blocks -%}{"id": "{{ block.id }}","type": "{{ block.type }}","settings": {{ block.settings | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}], 
+        id: "{{ section.id }}" 
+      }; 
+      "function"==typeof window[t]&&window.ReactDOM.createRoot(e).render(window.React.createElement(window[t],n)) 
+    } 
+    
+  });
 
-{% schema %}
-${schemaContent}
-{% endschema %}
-`.trim();
+  document.addEventListener("shopify:section:load", function(event) {
+    if (event.detail.sectionId === "{{ section.id }}") {
+      const e = document.getElementById("react-widget-{{ section.id }}");
+      if (e && window.React && window.ReactDOM) {
+        const t = "${name}";
+        const n = {
+          settings: {{ section.settings | json }}, 
+          blocks: [{%- for block in section.blocks -%}{"id": "{{ block.id }}","type": "{{ block.type }}","settings": {{ block.settings | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}], 
+          id: "{{ section.id }}"
+        };
+        if (typeof window[t] === "function") {
+          window.ReactDOM.createRoot(e).render(window.React.createElement(window[t], n));
+        }
+      }
+    }
+  }); 
+  
+</script> 
+{% schema %} 
+${schemaContent} 
+{% endschema %} 
+`.trim(); 
 
-  const finalPath = path.join(THEME_PATH, `sections/${name}.liquid`);
+const finalPath = path.join(THEME_PATH, `sections/${name}.liquid`);
   fs.writeFileSync(finalPath, liquidTemplate, 'utf8');
   
   console.log(`\x1b[32mOK\x1b[0m Injetado: \x1b[90msections/${name}.liquid\x1b[0m`);

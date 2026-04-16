@@ -1,0 +1,24 @@
+{
+    "name": "Hero banner",
+    "tag": "section",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Image banner"
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+        },
+        {
+            "type": "header",
+            "content": "Action"
+        },
+        {
+            "type": "url",
+            "id": "action_url",
+            "label": "Action URL"
+        }
+    ]
+}

@@ -1,8 +1,11 @@
   header {
-    height: 5rem;
+    height: 62px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  header .logo {
+    height: 38px;
   }
   header a {
     position: relative;

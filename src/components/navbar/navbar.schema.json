@@ -1,0 +1,16 @@
+{
+    "name": "Navbar",
+    "tag": "section",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Menu"
+        },
+        {
+            "type": "link_list",
+            "id": "menu",
+            "label": "t:labels.menu",
+            "default": "main-menu"
+        }
+    ]
+}

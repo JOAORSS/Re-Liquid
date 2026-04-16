@@ -1,4 +1,4 @@
 export interface Settings {
-  menu: string;
+  image_logo_settings: string | null;
   customer_account_menu: string;
 }

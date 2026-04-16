@@ -6,9 +6,9 @@
       "content": "Content"
     },
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "type": "image_picker",
+      "id": "image_logo_settings",
+      "label": "Logo image"
     },
     {
       "type": "link_list",

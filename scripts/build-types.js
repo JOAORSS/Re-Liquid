@@ -22,7 +22,7 @@ function getTypeScriptType(setting) {
     
     if (ListaStringArray.includes(setting.type)) return 'string[]';
     
-    if (ListaImagePicker.includes(setting.type)) return '{ src: string; width: number; height: number; aspect_ratio: number } | null';
+    if (ListaImagePicker.includes(setting.type)) return 'string | null';
     
     if (ListaVideo.includes(setting.type)) return '{ id: string; media_type: string; sources: { url: string; mime_type: string; format: string; height: number; width: number }[] } | null';
     
