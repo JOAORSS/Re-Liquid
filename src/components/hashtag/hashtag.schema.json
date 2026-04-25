@@ -1,0 +1,98 @@
+{
+    "name": "Hashtag",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Definitions"
+        },
+        {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color",
+            "default": "#efe8e1"
+        },
+        {
+            "type": "text",
+            "id": "name",
+            "label": "Name",
+            "default": "@shinystorm.au"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Our Crystal Community"
+        },
+        {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Subtitle",
+            "default": "Tag us to be featured"
+        },
+        {
+            "type": "text",
+            "id": "link_1",
+            "label": "Link"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_1",
+            "label": "Image"
+        },
+        {
+            "type": "text",
+            "id": "link_2",
+            "label": "Link"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_2",
+            "label": "Image"
+        },
+        {
+            "type": "text",
+            "id": "link_3",
+            "label": "Link"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_3",
+            "label": "Image"
+        },
+        {
+            "type": "text",
+            "id": "link_4",
+            "label": "Link"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_4",
+            "label": "Image"
+        },
+        {
+            "type": "text",
+            "id": "link_5",
+            "label": "Link"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_5",
+            "label": "Image"
+        },
+        {
+            "type": "text",
+            "id": "link_6",
+            "label": "Link"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_6",
+            "label": "Image"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Hashtag"
+        }
+    ]
+}

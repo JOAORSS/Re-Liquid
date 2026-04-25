@@ -1,0 +1,40 @@
+.location {
+    text-align: center;
+    width: 100%;
+}
+
+.location .image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    margin-bottom: 14px;
+    background: var(--light);
+    transition: transform 0.5s;
+}
+
+.location:hover .image {
+    transform: scale(1.04);
+}
+
+.location .name {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--dark);
+    margin-bottom: 3px;
+}
+
+.location .address {
+    font-size: 11px;
+    color: var(--grey);
+}
+
+.location .name_store {
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: var(--dark);
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Filter Sidebar",
+  "tag": "section",
+  "settings": [],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Filter Sidebar"
+    }
+  ]
+}

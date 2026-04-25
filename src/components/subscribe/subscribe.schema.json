@@ -1,0 +1,38 @@
+{
+    "name": "Subscribe",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Subscribe"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Crystal drops & new arrivals"
+        },
+        {
+            "type": "text",
+            "id": "description",
+            "label": "Description",
+            "default": "Join the community — get 10% off your first order with code WELCOME10"
+        },
+        {
+            "type": "text",
+            "id": "placeholder",
+            "label": "Placeholder",
+            "default": "your@email.com"
+        },
+        {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button text",
+            "default": "Subscribe"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Subscribe"
+        }
+    ]
+}

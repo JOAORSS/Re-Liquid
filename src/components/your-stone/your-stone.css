@@ -1,0 +1,56 @@
+.filter {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 90vw;
+    overflow-x: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.filter::-webkit-scrollbar {
+    display: none;
+}
+
+.crystal-select {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 30px;
+    border: 1.5px solid var(--border);
+    font-family: 'Barlow', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fff;
+    color: var(--grey);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.crystal-select img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.crystal-select p {
+    margin: 0;
+}
+
+.crystal-select:hover {
+    border-color: var(--gold);
+    color: var(--dark);
+}
+
+.crystal-select.active {
+    border-color: var(--gold);
+    background: #fff;
+    color: var(--dark);
+}

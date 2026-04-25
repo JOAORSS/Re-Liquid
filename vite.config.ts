@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import linaria from '@linaria/vite';
 import fs from 'fs';
 import path from 'path';
 
@@ -22,11 +23,20 @@ componentFolders.forEach(folder => {
 });
 
 export default defineConfig({
-  plugins: [react({ jsxRuntime: 'classic' })],
+  plugins: [
+    linaria({
+      include: ['**/*.{ts,tsx,jsx,js}'],
+      babelOptions: {
+        presets: ['@babel/preset-typescript', '@babel/preset-react'],
+      },
+    }),
+    react({ jsxRuntime: 'classic' })
+  ],
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     minify: 'terser',
+    cssCodeSplit: true,
     rollupOptions: {
       input: inputs,
       external: ['react', 'react-dom'],

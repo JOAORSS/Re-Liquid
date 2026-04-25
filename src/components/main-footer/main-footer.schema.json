@@ -1,0 +1,94 @@
+{
+    "name": "t:general.footer",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Menus"
+        },
+        {
+            "type": "text",
+            "id": "menu_1_title",
+            "label": "Menu 1 Title",
+            "default": "Shop"
+        },
+        {
+            "type": "link_list",
+            "id": "menu_1",
+            "label": "Menu 1"
+        },
+        {
+            "type": "text",
+            "id": "menu_2_title",
+            "label": "Menu 2 Title",
+            "default": "Crystals"
+        },
+        {
+            "type": "link_list",
+            "id": "menu_2",
+            "label": "Menu 2"
+        },
+        {
+            "type": "text",
+            "id": "menu_3_title",
+            "label": "Menu 3 Title",
+            "default": "Info"
+        },
+        {
+            "type": "link_list",
+            "id": "menu_3",
+            "label": "Menu 3"
+        },
+        {
+            "type": "header",
+            "content": "About us"
+        },
+        {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Logo"
+        },
+        {
+            "type": "text",
+            "id": "description",
+            "label": "Description",
+            "default": "Handmade crystal jewellery from the Sunshine Coast, Australia."
+        },
+        {
+            "type": "header",
+            "content": "Contact"
+        },
+        {
+            "type": "text",
+            "id": "email",
+            "label": "Email",
+            "default": "hello@shinystorm.com.au"
+        },
+        {
+            "type": "text",
+            "id": "auxiliar",
+            "label": "Aux",
+            "default": "@shinystorm.au"
+        },
+        {
+            "type": "text",
+            "id": "address",
+            "label": "Address",
+            "default": "Sunshine Coast, QLD"
+        },
+        {
+            "type": "header",
+            "content": "Copyright"
+        },
+        {
+            "type": "text",
+            "id": "copyright",
+            "label": "Copyright",
+            "default": "© 2026 Shiny Storm. All rights reserved. Sunshine Coast, Australia."
+        }
+    ],
+    "presets": [
+        {
+            "name": "Footer"
+        }
+    ]
+}

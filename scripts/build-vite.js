@@ -1,5 +1,6 @@
 import { build } from 'vite';
 import react from '@vitejs/plugin-react';
+import wyw from '@wyw-in-js/vite';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -103,20 +104,32 @@ async function runBuilds() {
   let compiledCount = 0;
 
   for (const folder of componentsToBuild) {
-    const entryPath = path.resolve(SRC_DIR, folder, `${folder}.tsx`);
+    const folderPath = path.resolve(SRC_DIR, folder);
+    if (!fs.existsSync(folderPath) || !fs.statSync(folderPath).isDirectory()) continue;
+    
+    const files = fs.readdirSync(folderPath);
+    const entryFile = files.find(f => f === `${folder}.tsx` || f === 'index.tsx');
 
-    if (fs.existsSync(entryPath)) {
+    if (entryFile) {
+      const entryPath = path.resolve(folderPath, entryFile);
       await build({
         configFile: false,
-        logLevel: 'silent',
+        logLevel: 'info',
         define: {
           'process.env.NODE_ENV': JSON.stringify('production')
         },
         plugins: [
+          wyw({
+            include: ['**/*.{ts,tsx,jsx,js}'],
+            babelOptions: {
+              presets: ['@babel/preset-typescript', '@babel/preset-react', '@linaria/babel-preset'],
+            },
+          }),
           liquidMacroPlugin(),
           react({ jsxRuntime: 'classic' })
         ],
         build: {
+          minify: 'terser',
           emptyOutDir: false,
           outDir: 'dist',
           lib: {
@@ -134,7 +147,7 @@ async function runBuilds() {
               },
               assetFileNames: (assetInfo) => {
                 const assetName = assetInfo.names && assetInfo.names.length > 0 ? assetInfo.names[0] : '';
-                if (assetName === 'style.css') return `${folder}.css`;
+                if (assetName === 'style.css' || assetName.endsWith('.css')) return `${folder}.css`;
                 return assetName || '[name].[ext]';
               }
             }

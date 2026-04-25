@@ -1,0 +1,29 @@
+{
+  "scopeName": "inline.liquid-injection",
+  "injectionSelector": "L:source.ts -comment, L:source.tsx -comment, L:source.js -comment, L:source.jsx -comment",
+  "patterns": [
+    {
+      "begin": "(?x)\\b(injectLiquidRaw)\\s*(?:<[^>]+>)?\\s*\\(\\s*(`)",
+      "beginCaptures": {
+        "1": {
+          "name": "entity.name.function.ts"
+        },
+        "2": {
+          "name": "punctuation.definition.string.template.begin.ts"
+        }
+      },
+      "end": "(`)",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.template.end.ts"
+        }
+      },
+      "contentName": "meta.embedded.block.liquid",
+      "patterns": [
+        {
+          "include": "text.html.liquid"
+        }
+      ]
+    }
+  ]
+}

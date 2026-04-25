@@ -1,0 +1,136 @@
+{
+    "name": "Your Stone",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Definitions"
+        },
+        {
+            "type": "text",
+            "id": "name",
+            "label": "Name"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Subtitle"
+        },
+        {
+            "type": "text",
+            "id": "view_all",
+            "label": "View all",
+            "default": "View All Products"
+        },
+        {
+            "type": "url",
+            "id": "view_all_link",
+            "label": "View all link"
+        },
+        {
+            "type": "header",
+            "content": "Tabsheet filter"
+        },
+        {
+            "type": "select",
+            "id": "filter_stone",
+            "label": "Tabsheet",
+            "options": [
+                {
+                    "value": "1",
+                    "label": "Tab - 1"
+                },
+                {
+                    "value": "2",
+                    "label": "Tab - 2"
+                },
+                {
+                    "value": "3",
+                    "label": "Tab - 3"
+                },
+                {
+                    "value": "4",
+                    "label": "Tab - 4"
+                },
+                {
+                    "value": "5",
+                    "label": "Tab - 5"
+                }
+            ]
+        },
+        
+        {
+            "type": "text",
+            "id": "title_1",
+            "label": "Name",
+            "visible_if": "{{ section.settings.filter_stone == '1'}}"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_1",
+            "label": "Image",
+            "visible_if": "{{ section.settings.filter_stone == '1'}}"
+        },
+        
+        {
+            "type": "text",
+            "id": "title_2",
+            "label": "Name",
+            "visible_if": "{{ section.settings.filter_stone == '2'}}"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_2",
+            "label": "Image",
+            "visible_if": "{{ section.settings.filter_stone == '2'}}"
+        },
+        
+        {
+            "type": "text",
+            "id": "title_3",
+            "label": "Name",
+            "visible_if": "{{ section.settings.filter_stone == '3'}}"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_3",
+            "label": "Image",
+            "visible_if": "{{ section.settings.filter_stone == '3'}}"
+        },
+        
+        {
+            "type": "text",
+            "id": "title_4",
+            "label": "Name",
+            "visible_if": "{{ section.settings.filter_stone == '4'}}"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_4",
+            "label": "Image",
+            "visible_if": "{{ section.settings.filter_stone == '4'}}"
+        },
+        
+        {
+            "type": "text",
+            "id": "title_5",
+            "label": "Name",
+            "visible_if": "{{ section.settings.filter_stone == '5'}}"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_5",
+            "label": "Image",
+            "visible_if": "{{ section.settings.filter_stone == '5'}}"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Your Stone"
+        }
+    ]
+}

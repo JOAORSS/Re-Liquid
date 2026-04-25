@@ -1,0 +1,39 @@
+{
+  "name": "liquid-injector",
+  "displayName": "Liquid Injector",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "grammars": [
+      {
+        "scopeName": "inline.liquid-injection",
+        "injectTo": [
+          "source.ts",
+          "source.tsx",
+          "source.js",
+          "source.jsx"
+        ],
+        "path": "./syntaxes/liquid-injection.json"
+      }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": "**/schemas/*.schema.json",
+        "url": "./data/theme_settings_category.json"
+      },
+      {
+        "fileMatch": "**/blocks/**/*.schema.json",
+        "url": "./data/block.json"
+      },
+      {
+        "fileMatch": "src/components/*/*.schema.json",
+        "url": "./data/section.json"
+      }
+    ]
+  }
+}

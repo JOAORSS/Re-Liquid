@@ -8,7 +8,7 @@ const SPEED = injectLiquid<number>("section.settings.marquee_speed | json | defa
 function OneCycle({ blocks }: { blocks: any[] }) {
   return (
     <>
-      {blocks.map((block: any, index: number) => { 
+      {blocks.map((block: any, index: number) => {
         if (block.type !== "announcement") return null;
         return (
           <>
@@ -25,6 +25,16 @@ export function Adbar(props: any) {
   const rulerRef = useRef<HTMLDivElement>(null);
   const [cycleWidth, setCycleWidth] = useState(0);
   const [copies, setCopies] = useState(0); 
+
+  useEffect(() => {
+    const el = document.querySelector('.adbar') as HTMLElement;
+    const onScroll = () => {
+      if (window.scrollY > 40) el?.classList.add('adbar--hidden');
+      else el?.classList.remove('adbar--hidden');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const measure = useCallback(() => {
     if (!rulerRef.current) return;
@@ -56,12 +66,12 @@ export function Adbar(props: any) {
 
       {copies > 0 && cycleWidth > 0 && (
         <>
-          <style>{`
-            @keyframes adbar-ticker {
-              from { transform: translateX(0); }
-              to   { transform: translateX(${-cycleWidth}px); }
-            }
-          `}</style>
+          <style>
+            {`@keyframes adbar-ticker { 
+                from { transform: translateX(0); } 
+                to { transform: translateX(${-cycleWidth}px); } 
+              }`}
+          </style>
           <div
             className="adbar-track"
             style={{ animation: `adbar-ticker ${duration}s linear infinite` }}

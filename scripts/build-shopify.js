@@ -23,7 +23,7 @@ const targetComponent = args[0];
 
 const files = fs.existsSync(DIST_DIR) ? fs.readdirSync(DIST_DIR) : [];
 let compiledComponents = files
-  .filter(f => f.endsWith('.js'))
+  .filter(f => f.endsWith('.js') && !f.startsWith('_'))
   .map(f => path.basename(f, '.js'));
 
 if (targetComponent && targetComponent !== '--all') {
@@ -36,7 +36,7 @@ if (targetComponent && targetComponent !== '--all') {
 }
 
 const componentFolders = fs.readdirSync(SRC_COMPONENTS_DIR, { withFileTypes: true })
-  .filter(dirent => dirent.isDirectory())
+  .filter(dirent => dirent.isDirectory() && !dirent.name.startsWith('_'))
   .map(dirent => dirent.name);
 
 console.log('\x1b[36mIniciando montagem do formato Liquid...\x1b[0m\n');
@@ -56,10 +56,20 @@ compiledComponents.forEach(name => {
   
   if (folderName) {
     const sourceCssPath = path.join(SRC_COMPONENTS_DIR, folderName, `${name}.css`);
+    const distCssPath = path.join(DIST_DIR, `${name}.css`);
+    
+    const cssFilesToProcess = [];
+    
+    if (fs.existsSync(distCssPath)) {
+      cssFilesToProcess.push(distCssPath);
+    }
     
     if (fs.existsSync(sourceCssPath)) {
-      const rawCss = fs.readFileSync(sourceCssPath, 'utf8');
-      const minifiedOutput = new CleanCSS().minify(rawCss);
+      cssFilesToProcess.push(sourceCssPath);
+    }
+    
+    if (cssFilesToProcess.length > 0) {
+      const minifiedOutput = new CleanCSS({ inline: ['local'] }).minify(cssFilesToProcess);
       cssContent = minifiedOutput.styles;
     }
 
@@ -89,7 +99,12 @@ compiledComponents.forEach(name => {
         
         schemaContent = JSON.stringify(parsedJson, null, 2);
       } catch (e) {
-        schemaContent = fs.readFileSync(schemaPath, 'utf8').trim();
+        try {
+          const rawText = fs.readFileSync(schemaPath, 'utf8');
+          schemaContent = JSON.stringify(JSON.parse(rawText), null, 2);
+        } catch (err) {
+          schemaContent = fs.readFileSync(schemaPath, 'utf8').trim();
+        }
       }
     }
   }
@@ -103,39 +118,9 @@ ${cssContent}
 </style> 
 
 <script> 
-  document.addEventListener("DOMContentLoaded", function() { 
-    ${jsContent} 
-    const e=document.getElementById("react-widget-{{ section.id }}"); 
-    if(e&&window.React&&window.ReactDOM){ 
-      const t="${name}"; 
-      const n={ 
-        settings: {{ section.settings | json }}, 
-        blocks: [{%- for block in section.blocks -%}{"id": "{{ block.id }}","type": "{{ block.type }}","settings": {{ block.settings | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}], 
-        id: "{{ section.id }}" 
-      }; 
-      "function"==typeof window[t]&&window.ReactDOM.createRoot(e).render(window.React.createElement(window[t],n)) 
-    } 
-    
-  });
-
-  document.addEventListener("shopify:section:load", function(event) {
-    if (event.detail.sectionId === "{{ section.id }}") {
-      const e = document.getElementById("react-widget-{{ section.id }}");
-      if (e && window.React && window.ReactDOM) {
-        const t = "${name}";
-        const n = {
-          settings: {{ section.settings | json }}, 
-          blocks: [{%- for block in section.blocks -%}{"id": "{{ block.id }}","type": "{{ block.type }}","settings": {{ block.settings | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}], 
-          id: "{{ section.id }}"
-        };
-        if (typeof window[t] === "function") {
-          window.ReactDOM.createRoot(e).render(window.React.createElement(window[t], n));
-        }
-      }
-    }
-  }); 
-  
+document.addEventListener("DOMContentLoaded",function(){${jsContent} const e=document.getElementById("react-widget-{{ section.id }}");if(e&&window.React&&window.ReactDOM){const t="${name}";const n={settings:{{ section.settings | json }},blocks:[{%- for block in section.blocks -%}{"id":"{{ block.id }}","type":"{{ block.type }}","settings":{{ block.settings | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],id:"{{ section.id }}"};"function"==typeof window[t]&&window.ReactDOM.createRoot(e).render(window.React.createElement(window[t],n))}});document.addEventListener("shopify:section:load",function(event){if(event.detail.sectionId==="{{ section.id }}"){const e=document.getElementById("react-widget-{{ section.id }}");if(e&&window.React&&window.ReactDOM){const t="${name}";const n={settings:{{ section.settings | json }},blocks:[{%- for block in section.blocks -%}{"id":"{{ block.id }}","type":"{{ block.type }}","settings":{{ block.settings | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],id:"{{ section.id }}"};if(typeof window[t]==="function"){window.ReactDOM.createRoot(e).render(window.React.createElement(window[t],n))}}}});  
 </script> 
+
 {% schema %} 
 ${schemaContent} 
 {% endschema %} 

@@ -1,0 +1,132 @@
+{
+    "name": "Locations",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Definitions"
+        },
+        {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color",
+            "default": "#ffffff"
+        },
+        {
+            "type": "text",
+            "id": "glyph",
+            "label": "svg",
+            "default": "<svg viewBox=\"0 0 80 50\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5 35 Q20 10 35 25 Q50 40 65 20 Q72 12 78 18\" stroke-width=\"2\" fill=\"none\"></path></svg>"
+        },
+        {
+            "type": "text",
+            "id": "name",
+            "label": "Name",
+            "default": "Sunshine Coast, Australia"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "From Noosa Heads"
+        },
+        {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Subtitle",
+            "default": "Born on the Sunshine Coast, Shiny Storm began as a passion for crystals and handcrafted jewellery. Visit us in person across our three stores."
+        },
+        {
+            "type": "select",
+            "id": "store",
+            "label": "Store",
+            "options": [
+                {
+                    "value": "1",
+                    "label": "Store 1"
+                },
+                {
+                    "value": "2",
+                    "label": "Store 2"
+                },
+                {
+                    "value": "3",
+                    "label": "Store 3"
+                }
+            ]
+        },
+        {
+            "type": "header",
+            "content": "Store - 1",
+            "visible_if": "{{ section.settings.store == '1'}}"
+        },
+        {
+            "type": "text",
+            "id": "name_1",
+            "label": "Name",
+            "visible_if": "{{ section.settings.store == '1'}}"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_1",
+            "label": "Image",
+            "visible_if": "{{ section.settings.store == '1'}}"
+        },
+        {
+            "type": "text",
+            "id": "address_1",
+            "label": "Address",
+            "visible_if": "{{ section.settings.store == '1'}}"
+        },
+        {
+            "type": "header",
+            "content": "Store - 2",
+            "visible_if": "{{ section.settings.store == '2'}}"
+        },
+        {
+            "type": "text",
+            "id": "name_2",
+            "label": "Name",
+            "visible_if": "{{ section.settings.store == '2'}}"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_2",
+            "label": "Image",
+            "visible_if": "{{ section.settings.store == '2'}}"
+        },
+        {
+            "type": "text",
+            "id": "address_2",
+            "label": "Address",
+            "visible_if": "{{ section.settings.store == '2'}}"
+        },
+        {
+            "type": "header",
+            "content": "Store - 3",
+            "visible_if": "{{ section.settings.store == '3'}}"
+        },
+        {
+            "type": "text",
+            "id": "name_3",
+            "label": "Name",
+            "visible_if": "{{ section.settings.store == '3'}}"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_3",
+            "label": "Image",
+            "visible_if": "{{ section.settings.store == '3'}}"
+        },
+        {
+            "type": "text",
+            "id": "address_3",
+            "label": "Address",
+            "visible_if": "{{ section.settings.store == '3'}}"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Locations"
+        }
+    ]
+}

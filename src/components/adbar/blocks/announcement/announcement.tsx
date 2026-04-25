@@ -1,4 +1,6 @@
-export function Announcement(props: { settings: any }) {
+import type { Settings } from "./announcement.types";
+
+export function Announcement(props: { settings: Settings }) {
     return (
         <>
             {props.settings.link != "" 

@@ -5,7 +5,7 @@ import "./main-header.css"
 const ShopifyAccount = 'shopify-account' as any;
 
 export function Header(props: { settings: Settings }) {
-    const shopName        = injectLiquid<string>("shop.name | link_to: routes.root_url | json");
+    const shopName        = injectLiquid<string>("shop.name | json");
     const linkRoot        = injectLiquid<string>("routes.root_url | json");
     const cartCount       = injectLiquid<number>("cart.item_count | json");
     const iconCart        = injectLiquid<string>("'icon-cart.svg' | inline_asset_content | json");
@@ -13,12 +13,11 @@ export function Header(props: { settings: Settings }) {
     const cartRoute       = injectLiquid<string>("routes.cart_url | json");
     const accountsEnabled = injectLiquid<boolean>("shop.customer_accounts_enabled | json");    
 
-
     return (
         <header className="header"> 
             {props.settings.image_logo_settings != null 
                 ? <a href={linkRoot}><img src={props.settings.image_logo_settings} className="logo" alt={shopName}></img></a>
-                : shopName
+                : <a href={linkRoot} dangerouslySetInnerHTML={{ __html: shopName }} />
             }            
 
             <div className="header__icons">
