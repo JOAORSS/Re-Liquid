@@ -73,6 +73,7 @@ const Card = styled.a`
     text-decoration: none;
     color: inherit;
     max-width: 278px;
+    min-width: 128px;
 
     .image-container {
         position: relative;

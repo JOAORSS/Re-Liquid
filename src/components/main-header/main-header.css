@@ -1,14 +1,21 @@
-  header {
+  .shopify-section:has(.header) {
+    position: sticky;
+    top: 0;
+    z-index: 10000;
+    background: white;
+    border-bottom: 1px solid var(--border);
+}
+
+header {
     height: 62px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: relative;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
+    z-index: 10000;
+}
+
+
   header .logo {
     height: 38px;
   }
@@ -34,3 +41,46 @@
     display: flex;
     gap: 1rem;
   }
+
+.hamburger {
+  display: none;
+  cursor:pointer;
+  padding:5px;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.hamburger span {
+  width: 20px;
+  height: 1.5px;
+  background: #333;
+  display: block;
+}
+
+.hamburger {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        padding: 5px;
+        height: 30px;
+        z-index: 1;
+    }
+
+    header > a {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .header__icons > * {
+      cursor: pointer;
+    }
+}

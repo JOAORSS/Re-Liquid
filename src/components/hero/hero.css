@@ -19,7 +19,14 @@
 }
 
 @media(max-width:768px) {
+  .hero-banner {
+    aspect-ratio: 5/4;
+    
+  }
+
   .hero-banner-img {
-    max-height: none
+    object-fit: cover;
+    height: 100%;
+    object-position: center;
   }
 }

@@ -27,10 +27,8 @@ export function Adbar(props: any) {
   const [copies, setCopies] = useState(0); 
 
   useEffect(() => {
-    const el = document.querySelector('.adbar') as HTMLElement;
     const onScroll = () => {
-      if (window.scrollY > 40) el?.classList.add('adbar--hidden');
-      else el?.classList.remove('adbar--hidden');
+        document.body.classList.toggle('header-scrolled', window.scrollY > 40);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);

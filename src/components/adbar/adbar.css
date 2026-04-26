@@ -2,6 +2,17 @@
   grid-column: 1 / -1;
 }
 
+.shopify-section:has(.adbar) {
+    position: sticky;
+    top: 0;
+    z-index: 1002;
+    transition: transform 0.3s ease;
+}
+
+.header-scrolled .shopify-section:has(.adbar) {
+    transform: translateY(-100%);
+}
+
 .adbar {
   background: var(--dark);
   color: #fff;
@@ -12,17 +23,11 @@
   font-size: 11px;
   letter-spacing: .8px;
   overflow: hidden;
-  transition: transform 0.3s ease;
   position: relative;
   min-height: 36px;
-  z-index: 1000;
   top: 0;
   left: 0;
   right: 0;
-}
-
-.adbar--hidden {
-  transform: translateY(-100%);
 }
 
 .adbar a {

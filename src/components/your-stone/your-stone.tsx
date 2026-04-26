@@ -80,6 +80,7 @@ export function YourStone(props: { settings: Settings }) {
             subtitle={props.settings.subtitle}
             showMore={{text: props.settings.view_all, url: props.settings.view_all_link}}
             filterChildren={FilterChildren}
+            mobileMode="column"
         >
             <div className="your-stone">
                 <Gallery>

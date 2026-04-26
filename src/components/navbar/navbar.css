@@ -1,40 +1,96 @@
+.shopify-section:has(.navbar) {
+    position: sticky;
+    top: 0;
+    z-index: 1001;
+    transition: transform 0.3s ease;
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
+}
+
+.header-scrolled .shopify-section:has(.navbar) {
+    transform: translateY(-100%);
+}
+
 .navbar {
-  background: var(--background);
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: center;
-  gap: var(--space-5);
-  padding: var(--space-2) var(--space-5);
-  max-width: var(--max-width);
-  margin: 0 auto;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  min-height: 36px;
+    display: flex;
+    justify-content: center;
+    gap: var(--space-5);
+    padding: var(--space-2) var(--space-5);
+    max-width: var(--max-width);
+    margin: 0 auto;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    min-height: 36px;
 }
 
 .navbar::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 .navbar a {
+    font-family: var(--font-body);
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--grey);
+    transition: color 0.2s ease;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    color: var(--plum);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-wrapper {
+  background: var(--background);
+}
+
+.nav-dropdown {
+  border-top: 1px solid var(--border);
+  background: #fff;
+}
+
+.nav-dropdown__row {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  padding: 14px var(--space-5);
+}
+
+.nav-dropdown__row--sub {
+  padding-top: 12px;
+}
+
+.nav-dropdown a {
   font-family: var(--font-body);
   font-size: var(--font-size-small);
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--grey);
+  text-decoration: none;
   transition: color 0.2s ease;
   white-space: nowrap;
-  text-decoration: none;
 }
 
-.navbar a:hover {
+.nav-dropdown a:hover,
+.nav-dropdown a.active {
   color: var(--plum);
 }
 
 @media (max-width: 768px) {
-  .navbar {
-    display: none;
-  }
+    .navbar {
+        display: none;
+    }
 }

@@ -7,13 +7,13 @@ interface ShowcaseContainerProps {
     title?: string;
     subtitle?: string;
     glyph?: string;
-    showMore?: { text: string, url: string };
     header?: boolean;
     backgroundColor?: string;
+    filterChildren?: React.ReactNode;
+    showMore?: { text: string, url: string };
     fullContainer? : "var(--content-width)" | "100%";
     orientation?: "column" | "row";
     mobileMode?: "overflow" | "column";
-    filterChildren?: React.ReactNode;
 }
 
 export default function ShowcaseContainer(
@@ -41,6 +41,10 @@ export default function ShowcaseContainer(
         setSectionId(id);
     }, []);
 
+
+    let mobilePadding = mobileMode === "overflow" ? "50px 10px" : "50px 20px";
+    if (filterChildren) mobilePadding = "50px 0px";
+
     return (
         <>
         <style>{`
@@ -52,30 +56,39 @@ export default function ShowcaseContainer(
         <Container 
             ref={sectionRef} 
             contentWidth={fullContainer} 
-            mobilePadding={mobileMode === "overflow" ? "50px 10px" : "50px 20px"} 
+            mobilePadding={mobilePadding} 
             mobileMargin={mobileMode === "overflow" ? "0" : "0 auto"}
         >
             {header && (
-            <Header>
-                {glyph && <Glyph dangerouslySetInnerHTML={{ __html: glyph }} />}
-                {name && <Section>{name}</Section>}
-                {title && <Title>{title}</Title>}
-                {subtitle && <Subtitle>{subtitle}</Subtitle>}
-            </Header>)}
+                <Header>
+                    {glyph && <Glyph dangerouslySetInnerHTML={{ __html: glyph }} />}
+                    {name && <Section>{name}</Section>}
+                    {title && <Title>{title}</Title>}
+                    {subtitle && <Subtitle>{subtitle}</Subtitle>}
+                </Header>
+            )}
+            
             {filterChildren && (
-            <FilterContainer>
-                {filterChildren}                
-            </FilterContainer>)}
+                <FilterContainer>
+                    {filterChildren}                
+                </FilterContainer>
+            )}
+
             <ChildContainer 
-                containerWidth={orientation === "row" ? "100%" : "var(--content-width)"}
                 orientation={orientation}
+                containerWidth={orientation === "row" ? "100%" : "var(--content-width)"}
                 wrap={mobileMode === "column" ? "wrap" : "nowrap" }
                 mobileOrientation={mobileMode === "column" ? "column" : "row"}
                 scrollX={mobileMode === "column" ? "hidden" : "scroll" }
             >
                 {children}
             </ChildContainer>
-            {showMore && <ShowMore href={showMore.url}>{showMore.text}</ShowMore>}
+
+            {showMore && (
+                <ShowMore href={showMore.url}>
+                    {showMore.text}
+                </ShowMore>
+            )}
         </Container>
         </>
     );
@@ -189,4 +202,3 @@ const ShowMore = styled.a`
     margin-top: 32px;
     text-align: center;
 `;
-
