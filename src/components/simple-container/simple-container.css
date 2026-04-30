@@ -1,0 +1,33 @@
+.simple-container h2 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--dark);
+    margin-bottom: 12px;
+}
+
+.simple-container p {
+    font-size: 13px;
+    color: var(--grey);
+    line-height: 1.9;
+}
+
+.simple-container__clamped {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-clamp: 3;
+}
+
+.simple-container__toggle {
+    background: none;
+    border: none;
+    color: var(--gold);
+    font-family: var(--font-body);
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    margin-top: 6px;
+}

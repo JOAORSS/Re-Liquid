@@ -1,61 +1,16 @@
 import { useState, useRef } from "react";
+import { useShopifyData } from "../../util/ShopifyDataContext";
+import type NavLink from "../../types/NavLink.types";
 import type { Settings } from "./navbar.types";
-import { injectLiquidRaw } from '../../util/shopify';
 import "./navbar.css"
-
-declare global {
-  interface Window { shopifyMenus: any; }
-}
-
-interface NavLink {
-  title: string;
-  url: string;
-  links: NavLink[];
-}
 
 export function Navbar(props: { settings: Settings, mobile?: boolean }) {
   const [activeLink,  setActiveLink]  = useState<NavLink | null>(null);
   const [activeChild, setActiveChild] = useState<NavLink | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const shopifyMenus = injectLiquidRaw<any>(`
-    {
-      {%- for linklist in linklists -%}
-        {{ linklist.handle | json }}: [
-          {%- for link in linklist.links -%}
-            {
-              "title": {{ link.title | json }},
-              "url": {{ link.url | json }},
-              "links": [
-                {%- for child_link in link.links -%}
-                  {
-                    "title": {{ child_link.title | json }},
-                    "url": {{ child_link.url | json }},
-                    "links": [
-                      {%- for grandchild_link in child_link.links -%}
-                        {
-                          "title": {{ grandchild_link.title | json }},
-                          "url": {{ grandchild_link.url | json }},
-                          "links": []
-                        }
-                        {%- unless forloop.last -%},{%- endunless -%}
-                      {%- endfor -%}
-                    ]
-                  }
-                  {%- unless forloop.last -%},{%- endunless -%}
-                {%- endfor -%}
-              ]
-            }
-            {%- unless forloop.last -%},{%- endunless -%}
-          {%- endfor -%}
-        ]
-        {%- unless forloop.last -%},{%- endunless -%}
-      {%- endfor -%}
-    }
-  `);
-
-  window.shopifyMenus = shopifyMenus;
-  const menuLinks: NavLink[] = props.settings.menu && window.shopifyMenus[props.settings.menu];
+  const data = useShopifyData();
+  const menuLinks: NavLink[] = data.menus[props.settings.menu];
 
   const handleLinkEnter = (link: NavLink) => {
     setActiveLink(link.links?.length > 0 ? link : null);
@@ -72,6 +27,8 @@ export function Navbar(props: { settings: Settings, mobile?: boolean }) {
   };
 
   return (
+    <>
+    <MobileNav settings={props.settings} />    
     <div
       className="navbar-wrapper"
       ref={wrapperRef}
@@ -79,7 +36,7 @@ export function Navbar(props: { settings: Settings, mobile?: boolean }) {
     >
       <nav className="navbar">
         {menuLinks?.length > 0 && menuLinks.map((link, i) => (
-        <a          
+          <a          
             key={i}
             href={link.url}
             className={activeLink?.url === link.url ? "active" : ""}
@@ -118,6 +75,52 @@ export function Navbar(props: { settings: Settings, mobile?: boolean }) {
             </div>
           )}
 
+        </div>
+      )}
+    </div>
+    </>
+  );
+}
+
+function MobileNav({ settings }: { settings: Settings }) {
+  const [open, setOpen] = useState(false);
+  const data = useShopifyData();
+  const menuLinks: NavLink[] = data.menus[settings.menu];
+
+  return (
+    <div className="mobile-nav mobile-nav-close">
+      <aside className={`mobile-drawer ${open ? "mobile-drawer--open" : ""}`}>
+        {menuLinks?.map((link, i) => (
+          <MobileNavItem key={i} link={link} />
+        ))}
+      </aside>
+      {open && <div className="mobile-overlay" onClick={() => setOpen(false)} />}
+    </div>
+  );
+}
+
+function MobileNavItem({ link }: { link: NavLink }) {
+  const [open, setOpen] = useState(false);
+  const hasChildren = link.links?.length > 0;
+
+  return (
+    <div className="mobile-nav-item">
+      <div className="mobile-nav-item__header">
+        <a href={hasChildren ? undefined : link.url}>
+          {link.title}
+        </a>
+        {hasChildren && (
+          <button onClick={() => setOpen(o => !o)}>
+            <span className={`chevron ${open ? "chevron--up" : ""}`}>›</span>
+          </button>
+        )}
+      </div>
+
+      {hasChildren && open && (
+        <div className="mobile-nav-children">
+          {link.links.map((child, i) => (
+            <MobileNavItem key={i} link={child} />
+          ))}
         </div>
       )}
     </div>

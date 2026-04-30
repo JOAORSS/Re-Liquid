@@ -13,7 +13,9 @@ export function ProductCard(
     rate,
     viwes,
     price,
-    currency
+    currency,
+    url,
+    stockTag
  }: {    
     name?: string;
     stone?: string;
@@ -26,6 +28,8 @@ export function ProductCard(
     viwes?: number;
     price?: number;
     currency?: string;
+    url?: string;
+    stockTag?: string;
  }) {
 
     if (!image) return null;
@@ -34,9 +38,10 @@ export function ProductCard(
     const CurrencySymbol = injectLiquid<string>(`cart.currency.symbol | json`);
 
     return (
-        <Card>
+        <Card href={url}>
             <div className="image-container">
-                {badge && <Badge>{badge}</Badge>}
+                {badge && <Badge color="var(--dark)" left="10px" right="auto">{badge}</Badge>}
+                {stockTag && <Badge color="var(--gold-light)" right="10px" left="auto">{stockTag}</Badge>}
                 <Image src={image} alt={name} />
                 {imageHover && (
                     <HoverImage 
@@ -74,6 +79,18 @@ const Card = styled.a`
     color: inherit;
     max-width: 278px;
     min-width: 128px;
+    animation: slideIn 0.3s ease-in-out forwards;
+
+    @keyframes slideIn {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
 
     .image-container {
         position: relative;
@@ -110,15 +127,16 @@ const Card = styled.a`
     }
 `;
 
-const Badge = styled.span`
+const Badge = styled.span<{ left: string, right: string, color: string }>`
     position: absolute;
     top: 10px;
-    left: 10px;
+    left: ${props => props.left};
+    right: ${props => props.right};
     font-size: 9px;
     font-weight: 700;
     letter-spacing: 0.8px;
     text-transform: uppercase;
-    background: var(--dark);
+    background: ${props => props.color};
     color: #fff;
     padding: 3px 8px;
     border-radius: 20px;

@@ -1,0 +1,39 @@
+{
+    "name": "Simple Container",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Definitions"
+        },
+        {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color",
+            "default": "#efe8e1"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Waterproof Crystal Jewellery — Shiny Storm"
+        },
+        {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>Our Waterproof collection is handcrafted to be worn every day — in the ocean, pool, shower, and gym. Every piece is made with genuine gemstones on waterproof cord with stainless steel or sterling silver hardware, crafted at our studio on the Sunshine Coast, Australia. Whether you're drawn to the calming energy of Amethyst, the love-amplifying properties of Rose Quartz, the clarity of Clear Quartz, the feminine elegance of Natural Pearl, or the intuition-enhancing Moonstone — there is a crystal that speaks to you.</p>"
+        }
+    ],
+
+    "presets": [
+        {
+            "name": "Simple Container",
+            "category": "Content",
+            "settings": {
+                "background_color": "#efe8e1",
+                "title": "Waterproof Crystal Jewellery — Shiny Storm",
+                "content": "<p>Our Waterproof collection is handcrafted to be worn every day — in the ocean, pool, shower, and gym. Every piece is made with genuine gemstones on waterproof cord with stainless steel or sterling silver hardware, crafted at our studio on the Sunshine Coast, Australia. Whether you're drawn to the calming energy of Amethyst, the love-amplifying properties of Rose Quartz, the clarity of Clear Quartz, the feminine elegance of Natural Pearl, or the intuition-enhancing Moonstone — there is a crystal that speaks to you.</p>"
+            }
+        }
+    ]
+}

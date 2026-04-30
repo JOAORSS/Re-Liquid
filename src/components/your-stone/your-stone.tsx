@@ -5,34 +5,21 @@ import { useState } from "react";
 import "./your-stone.css";
 import { ProductCard } from "../_product-card";
 import { injectLiquidRaw } from "../../util/shopify";
-import type { TBasicProduct } from "../../util/store.types";
+import type { TBasicProduct } from "../../types/store.types";
 
 export function YourStone(props: { settings: Settings }) {
 
-    const stones = [
-        {
-            name: props.settings.title_1,
-            image: props.settings.image_1
-        },
-        {
-            name: props.settings.title_2,
-            image: props.settings.image_2
-        },
-        {
-            name: props.settings.title_3,
-            image: props.settings.image_3
-        },
-        {
-            name: props.settings.title_4,
-            image: props.settings.image_4
-        },
-        {
-            name: props.settings.title_5,
-            image: props.settings.image_5
-        }
-    ];
+    const STONE_SLOTS = 5;
+    const stones = Array.from({ length: STONE_SLOTS }, (_, i) => {
+        const index = i + 1;
+        return {
+            name: props.settings[`title_${index}` as keyof Settings] as string,
+            image: props.settings[`image_${index}` as keyof Settings] as string,
+            url: props.settings[`view_all_link_${index}` as keyof Settings] as string,
+        };
+    }).filter(s => s.name && s.image);
 
-    const [currentStone, setCurrentStone] = useState<string>(props.settings.title_1);
+    const [currentStone, setCurrentStone] = useState<string>(stones[0]?.name ?? "");
 
     const rawProducts = injectLiquidRaw<TBasicProduct[]>(`
         [   
@@ -78,7 +65,7 @@ export function YourStone(props: { settings: Settings }) {
             name={props.settings.name} 
             title={props.settings.title} 
             subtitle={props.settings.subtitle}
-            showMore={{text: props.settings.view_all, url: props.settings.view_all_link}}
+            showMore={{text: props.settings.view_all, url: stones.find(s => s.name === currentStone)?.url || "#"}}
             filterChildren={FilterChildren}
             mobileMode="column"
         >
@@ -97,6 +84,7 @@ export function YourStone(props: { settings: Settings }) {
                             rate={4.5}
                             viwes={100}
                             price={product.price}
+                            url={product.url}
                         />
                     ))}
                 </Gallery>

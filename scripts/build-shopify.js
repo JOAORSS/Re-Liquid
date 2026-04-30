@@ -108,29 +108,46 @@ compiledComponents.forEach(name => {
       }
     }
   }
+  const isSnippet = name.startsWith('$');
+  const cleanName = isSnippet ? name.substring(1) : name;
 
-const liquidTemplate = ` 
-
-<div id="react-widget-{{ section.id }}" class="react-widget-${name.toLowerCase()}" data-settings='{{ section.settings | json | escape }}'></div> 
+let liquidTemplate = ` 
+<div id="react-widget-{{ section.id }}" class="react-widget-${cleanName.toLowerCase()}" data-settings='{{ section.settings | json | escape }}'></div> 
 
 <style> 
 ${cssContent} 
 </style> 
 
 <script> 
-document.addEventListener("DOMContentLoaded",function(){${jsContent} const e=document.getElementById("react-widget-{{ section.id }}");if(e&&window.React&&window.ReactDOM){const t="${name}";const n={settings:{{ section.settings | json }},blocks:[{%- for block in section.blocks -%}{"id":"{{ block.id }}","type":"{{ block.type }}","settings":{{ block.settings | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],id:"{{ section.id }}"};"function"==typeof window[t]&&window.ReactDOM.createRoot(e).render(window.React.createElement(window[t],n))}});document.addEventListener("shopify:section:load",function(event){if(event.detail.sectionId==="{{ section.id }}"){const e=document.getElementById("react-widget-{{ section.id }}");if(e&&window.React&&window.ReactDOM){const t="${name}";const n={settings:{{ section.settings | json }},blocks:[{%- for block in section.blocks -%}{"id":"{{ block.id }}","type":"{{ block.type }}","settings":{{ block.settings | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],id:"{{ section.id }}"};if(typeof window[t]==="function"){window.ReactDOM.createRoot(e).render(window.React.createElement(window[t],n))}}}});  
+document.addEventListener("DOMContentLoaded",function(){${jsContent} const e=document.getElementById("react-widget-{{ section.id }}");if(e&&window.React&&window.ReactDOM){const t="${cleanName}";const n={settings:{{ section.settings | json }},blocks:[{%- for block in section.blocks -%}{"id":"{{ block.id }}","type":"{{ block.type }}","settings":{{ block.settings | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],id:"{{ section.id }}"};"function"==typeof window[t]&&window.ReactDOM.createRoot(e).render(window.React.createElement(window[t],n))}});document.addEventListener("shopify:section:load",function(event){if(event.detail.sectionId==="{{ section.id }}"){const e=document.getElementById("react-widget-{{ section.id }}");if(e&&window.React&&window.ReactDOM){const t="${cleanName}";const n={settings:{{ section.settings | json }},blocks:[{%- for block in section.blocks -%}{"id":"{{ block.id }}","type":"{{ block.type }}","settings":{{ block.settings | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],id:"{{ section.id }}"};if(typeof window[t]==="function"){window.ReactDOM.createRoot(e).render(window.React.createElement(window[t],n))}}}});  
 </script> 
 
 {% schema %} 
 ${schemaContent} 
 {% endschema %} 
-`.trim(); 
+`;
 
-const finalPath = path.join(THEME_PATH, `sections/${name}.liquid`);
-  fs.writeFileSync(finalPath, liquidTemplate, 'utf8');
-  
-  console.log(`\x1b[32mOK\x1b[0m Injetado: \x1b[90msections/${name}.liquid\x1b[0m`);
-  processedCount++;
+if (isSnippet) {
+liquidTemplate = `
+<div id="react-snippet-${cleanName.toLowerCase()}"></div>
+
+<style> 
+${cssContent} 
+</style> 
+
+<script>
+document.addEventListener("DOMContentLoaded",function(){${jsContent}window["${cleanName}"] = ${name};const e=document.getElementById("react-snippet-${cleanName.toLowerCase()}");if(e&&window.React&&window.ReactDOM){const t="${cleanName}";"function"==typeof window[t]&&window.ReactDOM.createRoot(e).render(window.React.createElement(window[t]))}});
+</script>
+`;
+}
+
+    liquidTemplate = liquidTemplate.trim(); 
+
+    const targetFolder = isSnippet ? 'snippets' : 'sections';
+    const finalPath = path.join(THEME_PATH, `${targetFolder}/${cleanName}.liquid`);
+    
+    fs.writeFileSync(finalPath, liquidTemplate, 'utf8');
+    
+    console.log(`\x1b[32mOK\x1b[0m Injetado: \x1b[90m${targetFolder}/${cleanName}.liquid\x1b[0m`);
+    processedCount++;
 });
-
-console.log(`\n\x1b[32mProcesso finalizado:\x1b[0m ${processedCount} arquivos Liquid gerados com sucesso.`);

@@ -27,11 +27,6 @@
             "default": "View All Products"
         },
         {
-            "type": "url",
-            "id": "view_all_link",
-            "label": "View all link"
-        },
-        {
             "type": "header",
             "content": "Tabsheet filter"
         },
@@ -62,7 +57,6 @@
                 }
             ]
         },
-        
         {
             "type": "text",
             "id": "title_1",
@@ -74,8 +68,13 @@
             "id": "image_1",
             "label": "Image",
             "visible_if": "{{ section.settings.filter_stone == '1'}}"
+        },        
+        {
+            "type": "url",
+            "id": "view_all_link_1",
+            "label": "View all link",
+            "visible_if": "{{ section.settings.filter_stone == '1'}}"
         },
-        
         {
             "type": "text",
             "id": "title_2",
@@ -88,7 +87,12 @@
             "label": "Image",
             "visible_if": "{{ section.settings.filter_stone == '2'}}"
         },
-        
+        {
+            "type": "url",
+            "id": "view_all_link_2",
+            "label": "View all link",
+            "visible_if": "{{ section.settings.filter_stone == '2'}}"
+        },        
         {
             "type": "text",
             "id": "title_3",
@@ -101,7 +105,12 @@
             "label": "Image",
             "visible_if": "{{ section.settings.filter_stone == '3'}}"
         },
-        
+        {
+            "type": "url",
+            "id": "view_all_link_3",
+            "label": "View all link",
+            "visible_if": "{{ section.settings.filter_stone == '3'}}"
+        },
         {
             "type": "text",
             "id": "title_4",
@@ -114,7 +123,12 @@
             "label": "Image",
             "visible_if": "{{ section.settings.filter_stone == '4'}}"
         },
-        
+        {
+            "type": "url",
+            "id": "view_all_link_4",
+            "label": "View all link",
+            "visible_if": "{{ section.settings.filter_stone == '4'}}"
+        },        
         {
             "type": "text",
             "id": "title_5",
@@ -125,6 +139,12 @@
             "type": "image_picker",
             "id": "image_5",
             "label": "Image",
+            "visible_if": "{{ section.settings.filter_stone == '5'}}"
+        },
+        {
+            "type": "url",
+            "id": "view_all_link_5",
+            "label": "View all link",
             "visible_if": "{{ section.settings.filter_stone == '5'}}"
         }
     ],

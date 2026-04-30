@@ -68,7 +68,7 @@ function processSchemaFile(filePath) {
 
   const fileName = path.basename(filePath, '.schema.json');
   const dirName = path.dirname(filePath);
-  const typesPath = path.join(dirName, `${fileName}.types.ts`);
+  const typesPath = path.join(dirName, `${fileName}.types.d.ts`);
 
   fs.writeFileSync(typesPath, typesContent, 'utf8');
   return true;

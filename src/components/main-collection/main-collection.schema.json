@@ -1,0 +1,9 @@
+{
+  "name": "t:general.collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    }
+  ]
+}

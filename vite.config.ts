@@ -18,7 +18,8 @@ componentFolders.forEach(folder => {
   
   if (tsxFile) {
     const entryName = tsxFile.replace('.tsx', '');
-    inputs[entryName] = path.resolve(folderPath, tsxFile);
+    const safeName = entryName.replace(/[^a-zA-Z0-9_]/g, '') || 'component';
+    inputs[safeName] = path.resolve(folderPath, tsxFile);
   }
 });
 
@@ -39,14 +40,27 @@ export default defineConfig({
     cssCodeSplit: true,
     rollupOptions: {
       input: inputs,
-      external: ['react', 'react-dom'],
+      external: [
+        'react', 
+        'react-dom', 
+        'react-dom/client', 
+        'react/jsx-runtime'
+      ],
       output: {
         format: 'iife',
         globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM'
+          'react': 'React',
+          'react-dom': 'ReactDOM',
+          'react-dom/client': 'ReactDOM',
+          'react/jsx-runtime': 'React'
         },
-        entryFileNames: '[name].js',
+        entryFileNames: (chunkInfo) => {
+          if (chunkInfo.facadeModuleId) {
+            const originalName = path.basename(chunkInfo.facadeModuleId, '.tsx');
+            return `${originalName}.js`;
+          }
+          return '[name].js';
+        },
         assetFileNames: '[name].[ext]'
       }
     }

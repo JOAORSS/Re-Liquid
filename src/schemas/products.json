@@ -1,0 +1,24 @@
+{
+    "name": "Products",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Settings"
+      },
+      {
+        "type": "range",
+        "id": "per_page",
+        "label": "Products per page",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "default": 20
+      },
+      {
+        "type": "checkbox",
+        "id": "show_out_of_stock",
+        "label": "Show products without stock",
+        "default": false
+      }
+    ]
+  }

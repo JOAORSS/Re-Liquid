@@ -1,13 +1,8 @@
 import { injectLiquid } from "../../util/shopify";
+import { useShopifyData } from "../../util/ShopifyDataContext";
 import ShowcaseContainer from "../_showcase-container";
 import "./main-footer.css";
 import type { Settings } from "./main-footer.types";
-
-declare global {
-  interface Window {
-    storeLinklists?: Record<string, {title: string, url: string}[]>;
-  }
-}
 
 export function Footer(props: { settings: Settings, blocks: any[] }) {
 
@@ -32,6 +27,8 @@ export function Footer(props: { settings: Settings, blocks: any[] }) {
         }
     ];
 
+    const data = useShopifyData();
+
     return (
         <>
         <ShowcaseContainer
@@ -48,19 +45,19 @@ export function Footer(props: { settings: Settings, blocks: any[] }) {
                     <p className="about-us__description">{description}</p> 
                 </div>                
 
-                {menus.map((menu, Idx) => {
-                    const menuLinks = menu.handle && (window as any).shopifyMenus[menu.handle];
-
-                    return (
-                        <div key={`menu-${Idx}`} className="menu">
-                            <h4 className="menu__title">{menu.title}</h4>
-                            
-                            {menuLinks.map((link: {title: string, url: string}, linkIdx: number) => (
-                                <a className="menu__link" key={`link-${Idx}-${linkIdx}`} href={link.url}>{link.title}</a>
-                            ))}
-                        </div>
-                    );
-                })}
+                {menus.map((menu, idx) => {
+                const menuLinks = data?.menus[menu.handle] ?? [];
+                return (
+                    <div key={`menu-${idx}`} className="menu">
+                        <h4 className="menu__title">{menu.title}</h4>
+                        {menuLinks.map((link, linkIdx) => (
+                            <a className="menu__link" key={`link-${idx}-${linkIdx}`} href={link.url}>
+                                {link.title}
+                            </a>
+                        ))}
+                    </div>
+                );
+            })}
 
                 <div className="menu">
                     <h4 className="menu__title" >Contact</h4>
