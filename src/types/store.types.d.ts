@@ -10,6 +10,7 @@ export interface TBasicProduct {
     imageHover: string;
     description: string;
     quantity: number;
+    stone?: string[];
 }
 
 export interface TImage {

@@ -1,94 +1,99 @@
 {
-    "name": "t:general.footer",
+    "name": "Main Product",
     "settings": [
         {
-            "type": "header",
-            "content": "Menus"
+            "type": "text", 
+            "id": "cashback_text", 
+            "label": "Cashback Text", 
+            "default": "Cashback 10% OFF" 
         },
         {
-            "type": "text",
-            "id": "menu_1_title",
-            "label": "Menu 1 Title",
-            "default": "Shop"
+            "type": "text", 
+            "id": "coupon_code", 
+            "label": "Coupon Code", 
+            "default": "SAVE15" 
         },
         {
-            "type": "link_list",
-            "id": "menu_1",
-            "label": "Menu 1"
+            "type": "text", 
+            "id": "coupon_label", 
+            "label": "Coupon Label", 
+            "default": "15% OFF" 
         },
         {
-            "type": "text",
-            "id": "menu_2_title",
-            "label": "Menu 2 Title",
-            "default": "Crystals"
+            "type": "text", 
+            "id": "shipping_text", 
+            "label": "Shipping Text", 
+            "default": "Free shipping for orders over $50" 
         },
         {
-            "type": "link_list",
-            "id": "menu_2",
-            "label": "Menu 2"
-        },
-        {
-            "type": "text",
-            "id": "menu_3_title",
-            "label": "Menu 3 Title",
-            "default": "Info"
-        },
-        {
-            "type": "link_list",
-            "id": "menu_3",
-            "label": "Menu 3"
+            "type": "text", 
+            "id": "description_title", 
+            "label": "Description Title", 
+            "default": "Description" 
         },
         {
             "type": "header",
-            "content": "About us"
+            "content": "Bundle"
         },
         {
-            "type": "image_picker",
-            "id": "logo",
-            "label": "Logo"
+            "type": "checkbox",
+            "id": "bundle_use_default",
+            "label": "Use default bundle?",
+            "default": true
+        },
+        {
+            "type": "product",
+            "id": "bundle_product",
+            "label": "Bundle Product"
+        },
+        {
+            "type": "range",
+            "id": "bundle_discount",
+            "label": "Bundle Discount",
+            "default": 15,
+            "min": 0,
+            "max": 100
         },
         {
             "type": "text",
-            "id": "description",
-            "label": "Description",
-            "default": "Handmade crystal jewellery from the Sunshine Coast, Australia."
+            "id": "bundle_text",
+            "label": "Bundle Text",
+            "default": "You save 15% OFF"
         },
         {
             "type": "header",
-            "content": "Contact"
+            "content": "Benefits"
+        },
+        {
+            "type": "textarea",
+            "id": "benefits_svg_1",
+            "label": "Benefits 1 svg"
         },
         {
             "type": "text",
-            "id": "email",
-            "label": "Email",
-            "default": "hello@shinystorm.com.au"
+            "id": "benefits_label_1",
+            "label": "Benefits 1 label"   
+        },
+        {
+            "type": "textarea",
+            "id": "benefits_svg_2",
+            "label": "Benefits 2 svg"
         },
         {
             "type": "text",
-            "id": "auxiliar",
-            "label": "Aux",
-            "default": "@shinystorm.au"
+            "id": "benefits_label_2",
+            "label": "Benefits 2 label"   
+        },
+        {
+            "type": "textarea",
+            "id": "benefits_svg_3",
+            "label": "Benefits 3 svg"
         },
         {
             "type": "text",
-            "id": "address",
-            "label": "Address",
-            "default": "Sunshine Coast, QLD"
-        },
-        {
-            "type": "header",
-            "content": "Copyright"
-        },
-        {
-            "type": "text",
-            "id": "copyright",
-            "label": "Copyright",
-            "default": "© 2026 Shiny Storm. All rights reserved. Sunshine Coast, Australia."
+            "id": "benefits_label_3",
+            "label": "Benefits 3 label"   
         }
     ],
-    "presets": [
-        {
-            "name": "Footer"
-        }
-    ]
+    "presets": []
 }

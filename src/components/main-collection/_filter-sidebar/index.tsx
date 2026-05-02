@@ -1,32 +1,47 @@
 import { useState } from "react";
 import { styled } from "@linaria/react";
 import { useFilter } from "./Provider";
+import { normalizeTag } from "../../../util/shopify";
 
-interface StoneOption {
-    stone: string;
-    image: string;
-}
-
-export default function FilterSidebar({stoneOptions}: {stoneOptions: StoneOption[]}) {
-
+export default function FilterSidebar() {
     const { filters, toggleStone, toggleType, updateFilters, filteredProducts, allProducts } = useFilter();
     const [priceMin, setPriceMin] = useState(filters.priceMin ?? "");
     const [priceMax, setPriceMax] = useState(filters.priceMax ?? "");
     const [typesExpanded, setTypesExpanded] = useState(false);
+    const [stonesExpanded, setStonesExpanded] = useState(false);
 
-    const countByStone = (stone: string) =>
-        allProducts.filter(p => p.tags.some(t => t.toLowerCase() === stone.toLowerCase()) && p.quantity >= 1).length;
+    const inStockProducts = allProducts.filter(p => p.quantity >= 1);
 
-    const countByType = (type: string) =>
-        allProducts.filter(p => p.tags.some(t => t.toLowerCase() === type.toLowerCase()) && p.quantity >= 1).length;
+    const stoneCounts = inStockProducts.reduce((acc, product) => {
+        product.stone?.forEach(stone => {
+            acc[stone] = (acc[stone] || 0) + 1;
+        });
+        return acc;
+    }, {} as Record<string, number>);
 
-    const typeOptions = Array.from(
-        new Set(allProducts.filter(p => p.quantity >= 1).flatMap(p => p.tags).map(t => t.toLowerCase()))
-    ).filter(tag => !stoneOptions.some(s => s.stone.toLowerCase() === tag));
+    const stoneOptions = Object.keys(stoneCounts);
+    const MAX_VISIBLE_STONES = 5;
+    const visibleStones = stonesExpanded ? stoneOptions : stoneOptions.slice(0, MAX_VISIBLE_STONES);
+    const hiddenStonesCount = stoneOptions.length - MAX_VISIBLE_STONES;
 
-    const MAX_VISIBLE_TYPES = 10;
+    const typeCounts = inStockProducts.reduce((acc, product) => {
+        product.tags.forEach(tag => {
+            const isStone = product.stone!.some(s => s.toLowerCase() === tag.toLowerCase());
+            
+            if (!isStone) {
+                const normalizedType = normalizeTag(tag);
+                acc[normalizedType] = (acc[normalizedType] || 0) + 1;
+            }
+        });
+        return acc;
+    }, {} as Record<string, number>);
+
+    const typeOptions = Object.keys(typeCounts);
+
+    const MAX_VISIBLE_TYPES = 7;
     const visibleTypes = typesExpanded ? typeOptions : typeOptions.slice(0, MAX_VISIBLE_TYPES);
     const hiddenTypesCount = typeOptions.length - MAX_VISIBLE_TYPES;
+
     const applyPrice = () => {
         updateFilters({
             priceMin: priceMin !== "" ? Number(priceMin) : null,
@@ -41,7 +56,7 @@ export default function FilterSidebar({stoneOptions}: {stoneOptions: StoneOption
                 <BlockTitle>Crystal</BlockTitle>
                 <BlockList>
                     <StoneButton
-                        className={filters.stones.length === 0 ? "active" : ""}
+                        className={"active"}
                         onClick={() => updateFilters({ stones: [] })}
                     >
                         <StoneAll>✦</StoneAll>
@@ -49,23 +64,27 @@ export default function FilterSidebar({stoneOptions}: {stoneOptions: StoneOption
                         <StoneCount>{filteredProducts.length}</StoneCount>
                     </StoneButton>
 
-                    {stoneOptions.map((s, i) => (
+                    {visibleStones.map((s, i) => (
                         <StoneButton
                             key={i}
-                            className={filters.stones.includes(s.stone.toLowerCase()) ? "active" : ""}
-                            onClick={() => toggleStone(s.stone.toLowerCase())}
+                            className={filters.stones.includes(s.toLowerCase()) ? "active" : ""}
+                            onClick={() => toggleStone(s.toLowerCase())}
                         >
-                            <StoneImage src={s.image} alt={s.stone} />
-                            <StoneLabel>{s.stone}</StoneLabel>
-                            <StoneCount>{countByStone(s.stone)}</StoneCount>
+                            <StoneLabel>{s}</StoneLabel>
+                            <StoneCount>{stoneCounts[s]}</StoneCount>
                         </StoneButton>
                     ))}
                 </BlockList>
+                {stoneOptions.length > MAX_VISIBLE_STONES && (
+                    <ToggleMoreButton onClick={() => setStonesExpanded(!stonesExpanded)}>
+                        {stonesExpanded ? "Show less" : `+ Show ${hiddenStonesCount} more`}
+                    </ToggleMoreButton>
+                )}
             </Block>
 
             <Block>
                 <BlockTitle>Type</BlockTitle>
-                <BlockList>
+                <BlockList> 
                     {visibleTypes.map((type, i) => (
                         <TypeContainer key={i}>
                             <TypeCheckbox
@@ -75,7 +94,7 @@ export default function FilterSidebar({stoneOptions}: {stoneOptions: StoneOption
                             />
                             <TypeLabel>
                                 {type}
-                                <TypeCount>{countByType(type)}</TypeCount>
+                                <TypeCount>{typeCounts[type]}</TypeCount>
                             </TypeLabel>
                         </TypeContainer>
                     ))}
@@ -152,6 +171,8 @@ const BlockList = styled.div`
     display: flex;
     flex-direction: column;
     gap: 4px;
+    max-height: 20vh;
+    overflow-y: auto;
 `;
 
 const StoneButton = styled.button`
@@ -178,13 +199,13 @@ const StoneButton = styled.button`
     }
 `;
 
-const StoneImage = styled.img`
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-`;
+// const StoneImage = styled.img`
+//     width: 22px;
+//     height: 22px;
+//     border-radius: 50%;
+//     object-fit: cover;
+//     flex-shrink: 0;
+// `;
 
 const StoneAll = styled.span`
     width: 22px;

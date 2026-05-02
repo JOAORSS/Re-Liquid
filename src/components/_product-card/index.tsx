@@ -1,31 +1,33 @@
 import { styled } from "@linaria/react";
-import { injectLiquid } from "../../util/shopify";
+import { calculateProductRating, injectLiquid } from "../../util/shopify";
 
 export function ProductCard(
  {    
+    id,
     name,
     stone,
     image,
     imageHover,
     badge,
     subTitle,
-    stars,
-    rate,
-    viwes,
+    showStars = true,
+    showRate = true,
+    showViwes = true,
     price,
     currency,
     url,
     stockTag
- }: {    
+ }: {  
+    id: number;
     name?: string;
     stone?: string;
     image?: string;
     imageHover?: string;
     badge?: string;
     subTitle?: string;
-    stars?: number;
-    rate?: number;
-    viwes?: number;
+    showStars?: boolean;
+    showRate?: boolean;
+    showViwes?: boolean;
     price?: number;
     currency?: string;
     url?: string;
@@ -37,11 +39,21 @@ export function ProductCard(
     const CurrencyCode = injectLiquid<string>(`cart.currency.iso_code | json`);
     const CurrencySymbol = injectLiquid<string>(`cart.currency.symbol | json`);
 
+    const { rating, reviewCount } = calculateProductRating(id);
+
     return (
         <Card href={url}>
             <div className="image-container">
-                {badge && <Badge color="var(--dark)" left="10px" right="auto">{badge}</Badge>}
-                {stockTag && <Badge color="var(--gold-light)" right="10px" left="auto">{stockTag}</Badge>}
+                {badge && <Badge background="var(--dark)" left="10px" right="auto" color="#fff">{badge}</Badge>}
+                {stockTag && 
+                    <Badge 
+                        background={`var(${stockTag === "Out of Stock" ? "--out-of-stock" : "--only-three"})`}
+                        right="10px" 
+                        left="auto" 
+                        color={`${stockTag === "Out of Stock" ? "#c44" : "#7d5a00"}`}>
+                            {stockTag}
+                    </Badge>
+                }
                 <Image src={image} alt={name} />
                 {imageHover && (
                     <HoverImage 
@@ -59,9 +71,9 @@ export function ProductCard(
                 {name && <Name>{name}</Name>}
                 {subTitle && <Sub>{subTitle}</Sub>}
                 <div>
-                    {stars && <Stars>{'★'.repeat(stars)}</Stars>}
-                    {rate && <Rate>{rate}</Rate>}
-                    {viwes && <Viwes>{viwes}</Viwes>}
+                    {showStars && <Stars>{'★'.repeat(rating)}</Stars>}
+                    {showRate && <Rate>{rating}</Rate>}
+                    {showViwes && <Viwes>{reviewCount}</Viwes>}
                 </div>
                 <PriceContainer>
                     {price && <Price>{CurrencySymbol}{price}</Price>}
@@ -127,7 +139,7 @@ const Card = styled.a`
     }
 `;
 
-const Badge = styled.span<{ left: string, right: string, color: string }>`
+const Badge = styled.span<{ left: string, right: string, background: string, color: string }>`
     position: absolute;
     top: 10px;
     left: ${props => props.left};
@@ -136,8 +148,8 @@ const Badge = styled.span<{ left: string, right: string, color: string }>`
     font-weight: 700;
     letter-spacing: 0.8px;
     text-transform: uppercase;
-    background: ${props => props.color};
-    color: #fff;
+    background: ${props => props.background};
+    color: ${props => props.color};
     padding: 3px 8px;
     border-radius: 20px;
     z-index: 2;

@@ -1,5 +1,5 @@
 import { styled } from "@linaria/react";
-import { useFilter } from "../_filter-sidebar/Provider";
+import { useFilter } from "../main-collection/_filter-sidebar/Provider";
 import type { SortOption } from "../../types/FilterParams.types";
 
 interface CollectionHeaderProps {
@@ -23,14 +23,16 @@ export function CollectionHeader({ title }: CollectionHeaderProps) {
             <SortWrap>
                 <SortLabel>Sort by:</SortLabel>
                 <SortSelect
-                    value={filters.sort ?? "popular"}
+                    value={filters.sort ?? "popularity"}
                     onChange={e => handleSort(e.target.value as SortOption)}
                 >
-                    <option value="popular">Most Popular</option>
+                    <option value="popularity">Most Popular</option>
                     <option value="new">New Arrivals</option>
                     <option value="price-asc">Price: Low to High</option>
                     <option value="price-desc">Price: High to Low</option>
                     <option value="rating">Best Rated</option>
+                    <option value="A-Z">A-Z Alphabetical</option>
+                    <option value="Z-A">Z-A Alphabetical</option>
                 </SortSelect>
             </SortWrap>
         </Header>

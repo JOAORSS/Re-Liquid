@@ -73,6 +73,7 @@ export function YourStone(props: { settings: Settings }) {
                 <Gallery>
                     {filteredProducts.map((product) => (
                         <ProductCard
+                            id={product.id}
                             key={product.id}
                             name={product.title}
                             stone={product.tags[0]}
@@ -80,9 +81,6 @@ export function YourStone(props: { settings: Settings }) {
                             imageHover={product.imageHover}
                             badge={product.tags[0]}
                             subTitle={product.description}
-                            stars={3}
-                            rate={4.5}
-                            viwes={100}
                             price={product.price}
                             url={product.url}
                         />

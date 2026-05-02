@@ -32,7 +32,9 @@ interface ProductInfoProps {
     descriptionTitle?: string;
     description?: string;
     descriptionItems?: string[];
-    currency?: string;
+    sym?: string;
+    code?: string;
+    installmentsDefault?: number;
 }
 
 export function ProductInfo({
@@ -53,20 +55,18 @@ export function ProductInfo({
     bundle,
     descriptionTitle,
     description,
-    descriptionItems
+    descriptionItems,
+    sym,
+    code,
+    installmentsDefault = 4
 }: ProductInfoProps) {
     const [copied, setCopied] = useState(false);
-    const [bundleSelected, setBundleSelected] = useState<Set<number>>(
-        () => new Set(bundle?.items.map((_, i) => i) ?? [])
-    );
+    const [bundleSelected, setBundleSelected] = useState<Set<number>>(() => new Set(bundle?.items.map((_, i) => i) ?? []));
 
-    const sym = (window as any).ShopifyAnalytics.meta.currency;
-
-    const installment = price / 4;
-
-    const bundleTotal = bundle?.items.reduce((acc, item, i) => bundleSelected.has(i) ? acc + item.price : acc, 0) ?? 0;
+    const installment    = price / installmentsDefault;
+    const bundleTotal    = bundle?.items.reduce((acc, item, i) => bundleSelected.has(i) ? acc + item.price : acc, 0) ?? 0;
     const bundleOriginal = bundle?.items.reduce((acc, item) => acc + item.price, 0) ?? 0;
-    const bundleSave = bundleOriginal - bundleTotal * (1 - (bundle?.discount ?? 0) / 100);
+    const bundleSave     = bundleOriginal - bundleTotal * (1 - (bundle?.discount ?? 0) / 100);
 
     const toggleBundle = (i: number) => {
         setBundleSelected(prev => {
@@ -108,8 +108,8 @@ export function ProductInfo({
             )}
 
             <PriceRow>
-                <Price>{sym}{price.toFixed(2)}</Price>
-                {compareAtPrice && <PriceOld>{sym}{compareAtPrice.toFixed(2)}</PriceOld>}
+                <Price>{sym}{price} {code}</Price>
+                {compareAtPrice && <PriceOld>{sym}{compareAtPrice}</PriceOld>}
                 {compareAtPrice && (
                     <PriceOff>
                         {Math.round((1 - price / compareAtPrice) * 100)}% OFF
@@ -117,14 +117,14 @@ export function ProductInfo({
                 )}
             </PriceRow>
             <Installments>
-                or 4 interest-free payments of {sym}{installment.toFixed(2)} with Afterpay
+                or 4 interest-free payments of {sym}{installment} with Afterpay
             </Installments>
 
             {couponCode && (
                 <CouponBar onClick={copyCoupon}>
                     <svg viewBox="0 0 24 24" strokeWidth="1.5"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6"/><polyline points="16 2 22 2 22 8"/><line x1="22" y1="2" x2="12" y2="12"/></svg>
                     <CouponTxt><strong>{couponLabel ?? "10% OFF"}</strong> your first order — Use code:</CouponTxt>
-                    <CouponCode>{couponCode}</CouponCode>
+                    <CouponCode style={copied ? {opacity: 0} : {}}  >{couponCode}</CouponCode>
                     {copied && <CouponCopied>Copied!</CouponCopied>}
                 </CouponBar>
             )}
@@ -137,13 +137,10 @@ export function ProductInfo({
             )}
 
             {stoneTrigger && (
-                <StoneTrigger onClick={() =>
-                    document.getElementById(stoneTrigger.targetId)
-                        ?.scrollIntoView({ behavior: "smooth" })
-                }>
+                <StoneTrigger href={stoneTrigger.targetId}>
                     <svg viewBox="0 0 24 24" strokeWidth="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
                     <StoneTriggerTxt>
-                        <strong>{stoneTrigger.title}</strong>
+                        <strong>About {stoneTrigger.title}</strong>
                         <span>{stoneTrigger.subtitle}</span>
                     </StoneTriggerTxt>
                     <svg viewBox="0 0 24 24" strokeWidth="1.5" style={{ width: 16, height: 16, stroke: "#bbb", fill: "none", flexShrink: 0 }}>
@@ -152,7 +149,7 @@ export function ProductInfo({
                 </StoneTrigger>
             )}
 
-            <CtaBtn>Add to Cart — {sym}{price.toFixed(2)}</CtaBtn>
+            <CtaBtn>Add to Cart — {sym}{price}</CtaBtn>
 
             {benefits && benefits.length > 0 && (
                 <Benefits>
@@ -186,14 +183,14 @@ export function ProductInfo({
                                     <strong>{item.name}</strong>
                                     <span>{item.subtitle}</span>
                                 </BundleName>
-                                <BundlePrice>{sym}{item.price.toFixed(2)}</BundlePrice>
+                                <BundlePrice>{sym}{item.price}</BundlePrice>
                             </BundleItemRow>
                         ))}
                     </BundleItems>
                     <BundleTotal>
                         <div>Bundle total</div>
                         <BundleTotalPrice>{sym}{(bundleTotal * (1 - bundle.discount / 100)).toFixed(2)}</BundleTotalPrice>
-                        <div>You save {bundle.discount}% — {sym}{bundleSave.toFixed(2)}</div>
+                        <div>You save {bundle.discount}% — {sym}{bundleSave}</div>
                     </BundleTotal>
                     <BundleCta>Add Bundle to Cart</BundleCta>
                 </BundleBox>
@@ -380,7 +377,7 @@ const ShippingNote = styled.div`
     svg { width: 14px; height: 14px; stroke: #2a9d5c; fill: none; }
 `;
 
-const StoneTrigger = styled.div`
+const StoneTrigger = styled.a`
     display: flex;
     align-items: center;
     gap: 10px;
@@ -391,6 +388,7 @@ const StoneTrigger = styled.div`
     cursor: pointer;
     transition: all .2s;
     border: 1px solid var(--border);
+    text-decoration: none;
 
     &:hover { border-color: var(--plum); background: var(--plum-light); }
     svg:first-child { width: 20px; height: 20px; stroke: var(--plum); fill: none; flex-shrink: 0; }

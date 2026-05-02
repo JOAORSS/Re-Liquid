@@ -1,4 +1,4 @@
-export type SortOption = "popular" | "new" | "price-asc" | "price-desc" | "rating";
+export type SortOption = "popularity" | "new" | "price-asc" | "price-desc" | "rating" | "A-Z" | "Z-A";
 
 export default interface FilterParams {
     stones: string[];
