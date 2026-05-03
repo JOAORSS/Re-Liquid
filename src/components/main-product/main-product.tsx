@@ -163,7 +163,7 @@ export function MainProduct(props: { settings: Settings }) {
     const stoneTrigger = {
         targetId: getStoneLink(stone[0]),
         title: stone[0],
-        subtitle: "Discover the properties of this crystal"
+        subtitle: "Discover the properties of this crystal" 
     };
     
     return (

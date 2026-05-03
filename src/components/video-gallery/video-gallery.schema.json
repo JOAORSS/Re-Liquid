@@ -1,0 +1,21 @@
+{
+    "name": "Video Gallery",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Video definitions"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "See it on"
+        }
+    ],
+
+    "presets": [
+        {
+            "name": "Video gallery"
+        }
+    ]
+}

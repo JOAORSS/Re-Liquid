@@ -6,8 +6,6 @@ interface BreadcrumbItem {
     url?: string;
 }
 
-const canShow = injectLiquidRaw<boolean>(`{% if template.name == 'index' or template.name == 'search' or template.name == '404' %}false{% else %}true{% endif %}`);
-
 const breadcrumbItems = injectLiquidRaw<BreadcrumbItem[]>(`
     [
         { "label": "Home", "url": "/" }
@@ -29,27 +27,24 @@ const breadcrumbItems = injectLiquidRaw<BreadcrumbItem[]>(`
     ]
 `);
 
-console.log(canShow);
-console.log(breadcrumbItems);
-export default function Breadcrumb() {
+
+export default function Breadcrumb() { 
 
     return (
-        canShow ? (
-            <Nav className="shopify-section">
-                {breadcrumbItems && breadcrumbItems.map((item, i) => {
-                    const isLast = i === breadcrumbItems.length - 1;
-                    return (
+        <Nav className="shopify-section">
+            {breadcrumbItems && breadcrumbItems.map((item, i) => {
+                const isLast = i === breadcrumbItems.length - 1;
+                return (
                         <span key={i}>
                         {isLast || !item.url
                             ? <Current>{item.label}</Current>
                             : <Link href={item.url}>{item.label}</Link>
                         }
-                        {!isLast && <Sep>›</Sep>}
+                        {!isLast && <Sep>&#9656;</Sep>}
                     </span>
                 );
             })}
         </Nav>
-        ) : <></>
     );
 }
 
@@ -59,6 +54,7 @@ const Nav = styled.nav`
     gap: 6px;
     flex-wrap: wrap;
     max-width: var(--content-width);
+    background-color: transparent;
     margin: 14px auto 14px;
 `;
 

@@ -11,7 +11,6 @@ export function Collection(props: { settings: Settings }) {
     const products = window.__shopifyData__.collection?.products ?? [];
     const title = window.__shopifyData__.collection?.title ?? "";
 
-
     return (
         <FilterProvider products={products}>
             <CollectionHeader title={title} />

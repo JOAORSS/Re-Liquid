@@ -52,16 +52,16 @@ const collection = injectLiquidRaw<any>(`
             "tags": {{ product.tags | json }},
             "image": {{ product.images[0] | json }},
             "imageHover": {{ product.images[1] | json }},
-            "description":  {% assign normalized_desc = product.description | replace: '<b>', '<strong>' | replace: '</b>', '</strong>' %}
-                            {% if normalized_desc contains '<strong>' %}
-                                {% assign split_by_open = normalized_desc | split: '<strong>' %}
-                                {% assign last_bold_section = split_by_open | last %}  
-                                {% assign split_by_close = last_bold_section | split: '</strong>' %}
-                                {% assign final_bold_text = split_by_close | first | strip_html | strip %}
-                                "{{ final_bold_text }}"
-                            {% else %}
-                                "{{ product.description | strip_html | truncate: 100 | json }}"
-                            {% endif %},
+            "description": {% assign normalized_desc = product.description | replace: '<b>', '<strong>' | replace: '</b>', '</strong>' %}
+                            {%- if normalized_desc contains '<strong>' -%}
+                                {%- assign split_by_open = normalized_desc | split: '<strong>' -%}
+                                {%- assign last_bold_section = split_by_open | last -%}
+                                {%- assign split_by_close = last_bold_section | split: '</strong>' -%}
+                                {%- assign final_bold_text = split_by_close | first | strip_html | strip -%}
+                                {{ final_bold_text | json }}
+                            {%- else -%}
+                                {{ product.description | strip_html | truncate: 100 | json }}
+                            {%- endif -%},
             "collections": [{%- for c in product.collections -%}{{ c.handle | json }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}],
             "quantity": {{ product.variants | map: 'inventory_quantity' | sum | json }},
             "stone": [{% assign all_tags = product.tags | join: ' ' %}

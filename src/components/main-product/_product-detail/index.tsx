@@ -136,7 +136,7 @@ export function ProductInfo({
                 </ShippingNote>
             )}
 
-            {stoneTrigger && (
+            {stoneTrigger && stoneTrigger.title !== undefined && (
                 <StoneTrigger href={stoneTrigger.targetId}>
                     <svg viewBox="0 0 24 24" strokeWidth="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
                     <StoneTriggerTxt>

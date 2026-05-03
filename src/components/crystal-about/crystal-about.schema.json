@@ -1,0 +1,14 @@
+{
+    "name": "Crystal About",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Crystal About"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Crystal About"
+        }
+    ]
+}
