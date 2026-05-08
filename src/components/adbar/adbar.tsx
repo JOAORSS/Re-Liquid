@@ -12,7 +12,7 @@ function OneCycle({ blocks }: { blocks: any[] }) {
         if (block.type !== "announcement") return null;
         return (
           <>
-            <span key={`${block.id}-${index}`} className="adbar-item"><Announcement settings={block.settings} /></span>
+            <span key={`${block.id}-${index}`} className="adbar-item"><Announcement block={block} /></span>
             <span key={`sep-${block.id}-${index}`}><div className="Separador">✧</div></span>
           </>
         );

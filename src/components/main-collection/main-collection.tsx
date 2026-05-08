@@ -1,4 +1,4 @@
-import { CollectionHeader } from "../_filter-header";
+import { CollectionHeader } from "./_filter-header";
 import FilterSidebar from "./_filter-sidebar";
 import { FilterProvider, useFilter } from "./_filter-sidebar/Provider";
 import Gallery from "../_gallery";
@@ -7,7 +7,6 @@ import type { Settings } from "./main-collection.types";
 import "./main-collection.css";
 
 export function Collection(props: { settings: Settings }) {
-    props;
     const products = window.__shopifyData__.collection?.products ?? [];
     const title = window.__shopifyData__.collection?.title ?? "";
 
@@ -16,15 +15,20 @@ export function Collection(props: { settings: Settings }) {
             <CollectionHeader title={title} />
             <div className="collection-layout">
                 <FilterSidebar />
-                <CollectionGallery />
+                <CollectionGallery settings={props.settings} />
             </div>
         </FilterProvider>
     );
 }
 
-function CollectionGallery() {
+function CollectionGallery({settings}: {settings: Settings}) {
     const { filteredProducts } = useFilter();
     return (
+        filteredProducts.length === 0 ? (
+            <div className="no-products">
+                <h1>{settings.out_stock_label}</h1>
+            </div>
+        ) : (
         <Gallery columns={3}>
             {filteredProducts.map((product, i) => (
                 <ProductCard
@@ -41,5 +45,6 @@ function CollectionGallery() {
                 />
             ))}
         </Gallery>
+        )
     );
 }

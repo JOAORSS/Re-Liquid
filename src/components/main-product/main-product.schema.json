@@ -93,6 +93,29 @@
             "type": "text",
             "id": "benefits_label_3",
             "label": "Benefits 3 label"   
+        },
+        {
+            "type": "header",
+            "content": "Related Products"
+        },
+        {
+            "type": "checkbox",
+            "id": "fixed_collection",
+            "label": "Use a fixed collection",
+            "info": "If false, the first product gallery will be filtered using the same collection as the main product."
+        },
+        {
+            "type": "collection",
+            "id": "fixed_collection_collection",
+            "label": "Fixed collection",
+            "info": "The collection to use for the first product gallery."
+        },
+        {
+            "type": "checkbox",
+            "id": "filter_by_crystal",
+            "label": "Filter gallery by crystal",
+            "default": false,
+            "info": "If true, the second product gallery will be filtered by the same crystal as the main product."
         }
     ],
     "presets": []

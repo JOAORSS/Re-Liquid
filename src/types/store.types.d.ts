@@ -13,6 +13,24 @@ export interface TBasicProduct {
     stone?: string[];
 }
 
+export interface TBundleItem {
+    id: number;
+    name: string;
+    subtitle: string;
+    price: number;
+    image: string;
+}
+
+export interface TBundleData {
+    discount: number;
+    items: TBundleItem[];
+}
+
+export interface TShowcaseGallery {
+    title: string;
+    products: TBasicProduct[];
+}
+
 export interface TImage {
   id: number;
   src: string;

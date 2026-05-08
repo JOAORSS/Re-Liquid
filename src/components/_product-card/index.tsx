@@ -16,7 +16,8 @@ export function ProductCard(
     price,
     currency,
     url,
-    stockTag
+    stockTag,
+    tamMin = "128px"
  }: {  
     id: number;
     name?: string;
@@ -32,6 +33,7 @@ export function ProductCard(
     currency?: string;
     url?: string;
     stockTag?: string;
+    tamMin?: string;
  }) {
 
     if (!image) return null;
@@ -42,7 +44,7 @@ export function ProductCard(
     const { rating, reviewCount } = calculateProductRating(id);
 
     return (
-        <Card href={url}>
+        <Card href={url} tamMin={tamMin}>
             <div className="image-container">
                 {badge && <Badge background="var(--dark)" left="10px" right="auto" color="#fff">{badge}</Badge>}
                 {stockTag && 
@@ -55,7 +57,7 @@ export function ProductCard(
                     </Badge>
                 }
                 <Image src={image} alt={name} />
-                {imageHover && (
+                {imageHover && !imageHover.includes('.gif') && (
                     <HoverImage 
                         src={imageHover} 
                         alt={`${name} hover`} 
@@ -84,14 +86,19 @@ export function ProductCard(
     );
 }
 
-const Card = styled.a` 
+const Card = styled.a<{ tamMin?: string }>` 
     display: flex;
     flex-direction: column;
     text-decoration: none;
     color: inherit;
     max-width: 278px;
     min-width: 128px;
+    font-family: var(--font-display);
     animation: slideIn 0.3s ease-in-out forwards;
+    
+    @media (max-width: 768px) {
+        min-width: ${props => props.tamMin || "128px"};
+    }
 
     @keyframes slideIn {
         from {
@@ -145,6 +152,7 @@ const Badge = styled.span<{ left: string, right: string, background: string, col
     left: ${props => props.left};
     right: ${props => props.right};
     font-size: 9px;
+    font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: 0.8px;
     text-transform: uppercase;
@@ -182,7 +190,7 @@ const ViewProduct = styled.span`
     padding: 12px;
     background: rgba(67, 41, 34, 0.92);
     color: #fff;
-    font-family: 'Barlow', sans-serif;
+    font-family: var(--font-display);
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 2px;
@@ -196,6 +204,7 @@ const ViewProduct = styled.span`
 
 const Stone = styled.p<{ children: React.ReactNode }>`
     font-size: 9px;
+    font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
@@ -209,6 +218,7 @@ const Name = styled.h3<{ children: React.ReactNode }>`
     color: var(--dark);
     line-height: 1.3;
     margin-bottom: 3px;
+    font-family: var(--font-display);
     display: block;
     transition: color 0.2s;
 
@@ -221,6 +231,7 @@ const Sub = styled.p<{ children: React.ReactNode }>`
     font-size: 11px;
     color: var(--grey);
     margin-bottom: 5px;
+    font-family: var(--font-display);
     line-height: 1.4;
     max-width: 75%;
     white-space: nowrap;

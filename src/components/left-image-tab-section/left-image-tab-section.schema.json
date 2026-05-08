@@ -1,0 +1,37 @@
+{
+  "name": "Crystal Info (Left Image)",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Main Image"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" },
+        { "value": "tertiary", "label": "Tertiary" }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "text",
+      "id": "text-b1",
+      "label": "Bottom Link Text"
+    },
+    {
+      "type": "url",
+      "id": "link-b",
+      "label": "Bottom Link URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Crystal Info (Left Image)",
+      "category": "Content"
+    }
+  ]
+}

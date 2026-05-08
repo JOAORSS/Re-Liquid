@@ -40,7 +40,7 @@ export function Hashtag(props: { settings: Settings }) {
             orientation="row"
             backgroundColor={props.settings.background_color}
         >
-            <div className="hashtag-container">
+            <div className="hashtag-container mobile-slider-container">
                 {locations.map((location) => (
                     location.image && location.link && (
                         <a href={location.link} className="hashtag-link">

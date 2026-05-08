@@ -56,13 +56,30 @@ function processSchemaFile(filePath) {
   if (!parsedSchema.settings) return false;
 
   let typesContent = 'export interface Settings {\n';
+  const isBlock = filePath.includes('/blocks') || filePath.includes('\\blocks');
+
+  let settingsContent = '';
 
   parsedSchema.settings.forEach(setting => {
     const tsType = getTypeScriptType(setting);
     if (tsType && setting.id) {
-      typesContent += `  ${setting.id}: ${tsType};\n`;
+      if (setting.id.includes('-')) {
+        settingsContent += `    '${setting.id}': ${tsType};\n`;
+      } else {
+        settingsContent += `    ${setting.id}: ${tsType};\n`;
+      }
     }
   });
+
+  if (isBlock) {
+    typesContent += `  id: string;\n`;
+    typesContent += `  type: string;\n`;
+    typesContent += `  settings: {\n`;
+    typesContent += settingsContent;
+    typesContent += `  }\n`;
+  } else {
+    typesContent += settingsContent;
+  }
 
   typesContent += '}\n';
 

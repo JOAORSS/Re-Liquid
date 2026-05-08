@@ -1,11 +1,11 @@
 import type { Settings } from "./announcement.types";
 
-export function Announcement(props: { settings: Settings }) {
+export function Announcement({ block }: { block: Settings }) {
     return (
         <>
-            {props.settings.link != "" 
-                ? <a className="item" href={props.settings.link || "#"}>{props.settings.label}</a> 
-                : <span className="item">{props.settings.label}</span>}
+            {block.settings.link != "" 
+                ? <a className="item" href={block.settings.link || "#"}>{block.settings.label}</a> 
+                : <span className="item">{block.settings.label}</span>}
         </>
     );
 }

@@ -99,6 +99,7 @@ const Container = styled.section<{ contentWidth: string, mobilePadding: string, 
     flex-direction: column;
     align-items: center;
     margin: 0 auto;
+    font-family: var(--font-display);
     padding: 50px 20px;
     width: 100%;
     max-width: ${props => props.contentWidth};
@@ -164,16 +165,21 @@ const Section = styled.span`
 `;
 
 const Title = styled.h2`
-    font-family: 'Barlow', sans-serif;
-    font-size: 34px;
+    font-family: var(--font-display);
+    font-size: 2rem;
     font-weight: 300;
     color: var(--dark);
     line-height: 1.2;
     margin-bottom: 8px;
+
+    @media (max-width: 768px) {
+        font-size: 1.6rem;
+        line-height: 1s;
+    }
 `;
 
 const Subtitle = styled.h3`
-    font-size: 13px;
+    font-size: .8rem;
     color: var(--grey);
     line-height: 1.7;
     font-weight: 400;

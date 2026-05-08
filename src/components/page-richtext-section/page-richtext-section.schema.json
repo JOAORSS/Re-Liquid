@@ -1,0 +1,59 @@
+{
+  "name": "Page Rich text",
+  "class": "page-richtext-section",
+  "settings": [
+    {
+      "id": "title-t",
+      "type": "text",
+      "label": "Sub Heading"
+    },
+    {
+      "id": "title",
+      "type": "html",
+      "label": "Heading",
+      "default": "Title"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Optional: Call to action link"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Call to action button text"
+    },
+    {
+      "type": "header",
+      "content": "Color"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" },
+        { "value": "tertiary", "label": "Tertiary" }
+      ],
+      "default": "primary"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Page Rich text",
+      "category": "Text",
+      "blocks": [
+        {
+          "type": "richtext"
+        }
+      ]
+    }
+  ]
+}

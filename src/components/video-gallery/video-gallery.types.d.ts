@@ -1,3 +1,3 @@
 export interface Settings {
-  title: string;
+    title: string;
 }

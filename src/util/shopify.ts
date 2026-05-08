@@ -1,3 +1,9 @@
+declare global {
+    interface Window {
+        Shopify: any;
+    }
+}
+
 export function injectLiquid<T = any>(liquidString: string): T {
     liquidString;
     return null as unknown as T;
@@ -35,4 +41,49 @@ export function normalizeTag(tag: string): string {
     }
 
     return lower;
+}
+
+export async function addItemsToCart(mainVariantId: number, quantity: number, bundleVariantIds: number[] = []) {
+    const items = [{
+        id: mainVariantId,
+        quantity: quantity
+    }];
+
+    bundleVariantIds.forEach(id => {
+        items.push({
+            id: id,
+            quantity: 1
+        });
+    });
+
+    const rootUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root)
+        ? window.Shopify.routes.root
+        : '/';
+
+    const response = await fetch(`${rootUrl}cart/add.js`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({ items })
+    });
+
+    if (!response.ok) {
+        // Captura o corpo do erro que a Shopify devolve
+        const errorData = await response.json();
+        console.error("Erro retornado pela Shopify:", errorData);
+        
+        // Lança o erro com a descrição exata (ex: "You can't add more Amazonite to the cart")
+        throw new Error(errorData.description || 'Failed to add to cart');
+    }
+
+    const cartResponse = await fetch(`${rootUrl}cart.js`);
+    const cartData = await cartResponse.json();
+
+    document.querySelectorAll('[data-cart-count]').forEach(el => {
+        el.textContent = cartData.item_count;
+    });
+
+    return cartData;
 }

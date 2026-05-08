@@ -1,0 +1,118 @@
+.page-richtext-section {
+  padding: 60px 20px;
+  width: 100%;
+  
+}
+
+.page-richtext-wrapper {
+  max-width: var(--page-width, 1200px);
+  margin: 0 auto;
+}
+
+.page-richtext-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .page-richtext-grid {
+    grid-template-columns: 1fr 3fr;
+    gap: 48px;
+  }
+}
+
+.page-richtext-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.page-richtext-subheading {
+  font-family: var(--font-body);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+  opacity: 0.7;
+}
+
+.page-richtext-heading {
+  font-family: var(--font-display);
+  font-size: 22px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.page-richtext-heading a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s;
+}
+
+.page-richtext-heading a:hover {
+  border-bottom-color: currentColor;
+  opacity: 0.8;
+}
+
+.page-richtext-content {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.page-richtext-content h5 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-weight: 400;
+}
+
+.page-richtext-content p {
+  margin-bottom: 16px;
+}
+
+.page-richtext-btn {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 14px 28px;
+  background-color: var(--plum, #6b4c7a);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  transition: background-color 0.2s;
+}
+
+.page-richtext-btn:hover {
+  background-color: var(--dark, #333);
+}
+
+.scheme-primary {
+  background-color: var(--color-background, #fff);
+  color: var(--color-foreground, #333);
+}
+
+.scheme-secondary {
+  background-color: var(--plum-light, #f5f0f6);
+  color: var(--dark, #333);
+}
+
+.scheme-tertiary {
+  background-color: var(--plum, #6b4c7a);
+  color: #fff;
+}
+
+.scheme-tertiary .page-richtext-btn {
+  background-color: #fff;
+  color: var(--plum, #6b4c7a);
+}
+
+.scheme-tertiary .page-richtext-btn:hover {
+  background-color: var(--plum-light, #f5f0f6);
+}

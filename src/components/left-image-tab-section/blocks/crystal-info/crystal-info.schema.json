@@ -1,0 +1,59 @@
+{
+    "type": "richtext",
+    "name": "Rich text",
+    "limit": 1,
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading"
+        },
+        {
+            "type": "richtext",
+            "id": "richtext",
+            "label": "Intro Text & Subtitle"
+        },
+        {
+            "type": "header",
+            "content": "Tab 1 - Read More"
+        },
+        {
+            "type": "text",
+            "id": "title-ta",
+            "label": "Tab 1 Title"
+        },
+        {
+            "type": "richtext",
+            "id": "text-ta",
+            "label": "Tab 1 Content"
+        },
+        {
+            "type": "header",
+            "content": "Tab 2 - Chakra"
+        },
+        {
+            "type": "text",
+            "id": "title-tb",
+            "label": "Tab 2 Title"
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Tab 2 Image"
+        },
+        {
+            "type": "header",
+            "content": "Tab 3 - Details"
+        },
+        {
+            "type": "text",
+            "id": "title-tc",
+            "label": "Tab 3 Title"
+        },
+        {
+            "type": "richtext",
+            "id": "text-tc",
+            "label": "Tab 3 Content"
+        }
+    ]
+}

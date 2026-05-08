@@ -1,10 +1,11 @@
 
-
 .about {
     margin: 0 auto;
+    padding: 50px 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 48px;
+    font-family: var(--font-display);
     align-items: center;
 }
 
@@ -12,14 +13,13 @@
     border-radius: 12px;
     overflow: hidden;
     aspect-ratio: 4 / 5;
-    background: var(--light);
+    background: #fff0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: fill;
 }
 
 .about > div > h2 {
-    font-family: 'Barlow', sans-serif;
     font-size: 30px;
     font-weight: 400;
     margin-bottom: 16px;
@@ -27,10 +27,15 @@
 }
 
 .about > div > p {
-    font-size: 13px;
+    font-size: 1rem;
     color: #666;
     line-height: 1.8;
     margin-bottom: 16px;
+}
+
+.about > div > p > h5 {
+    font-size: 1.25rem !important;
+    line-height: initial;
 }
 
 .features {
@@ -71,5 +76,18 @@
     .about {
         grid-template-columns: 1fr;
         gap: 28px;
+        padding: 20px 0;
+    }
+
+    .about > div > p > h5 {
+        font-size: 1rem !important;
+        line-height: initial;
+    }
+
+    .about > div > p {
+        font-size: 1rem;
+        color: #666;
+        line-height: 1.4;
+        margin-bottom: 16px;
     }
 }

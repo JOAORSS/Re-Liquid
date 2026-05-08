@@ -8,3 +8,10 @@ export default interface ShopifyData {
     products: TBasicProduct[];
   };
 }
+
+
+export interface Block {
+  id: string;
+  type: string;
+  settings: Any;
+}

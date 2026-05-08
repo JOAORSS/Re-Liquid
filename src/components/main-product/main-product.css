@@ -2,5 +2,22 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 100%;
+    padding: 0 20px;
+    margin-bottom: 50px;
     gap: 48px;
+}
+
+@media (min-width: 769px) {
+    .product-gallery-wrapper {
+        position: sticky;
+        top: calc(80px + 14px);
+        align-self: start;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-container {
+        grid-template-columns: 1fr;
+        padding: 0px;
+    }
 }

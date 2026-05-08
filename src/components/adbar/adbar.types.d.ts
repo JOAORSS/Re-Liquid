@@ -1,3 +1,3 @@
 export interface Settings {
-  marquee_speed: any;
+    marquee_speed: any;
 }

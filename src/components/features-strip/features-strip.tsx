@@ -1,4 +1,5 @@
 import './features-strip.css';
+import type { Settings } from "./blocks/strip/strip.types";
 import { Strip } from './blocks/strip/strip';
 
 export function Features(props: any) {
@@ -8,8 +9,8 @@ export function Features(props: any) {
   return (
     <div className="features">
       <div className="features-in">
-        {props.blocks.map((block: any) => (
-          <Strip settings={block.settings} />
+        {props.blocks.map((block: Settings) => (
+          <Strip block={block} />
         ))}
       </div>
     </div>

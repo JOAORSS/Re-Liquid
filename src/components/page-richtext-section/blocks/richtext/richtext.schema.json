@@ -1,0 +1,23 @@
+{
+    "type": "richtext",
+    "name": "Rich text",
+    "limit": 1,
+    "settings": [
+    {
+        "id": "richtext",
+        "type": "richtext",
+        "label": "Text",
+        "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+    },
+    {
+        "type": "url",
+        "id": "cta_url",
+        "label": "Optional: Call to action link"
+    },
+    {
+        "type": "text",
+        "id": "cta_text",
+        "label": "Call to action button text"
+    }
+    ]
+}

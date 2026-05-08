@@ -1,0 +1,9 @@
+{
+  "name": "t:general.cart",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    }
+  ]
+}

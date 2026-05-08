@@ -1,6 +1,6 @@
 import { styled } from "@linaria/react";
-import { useFilter } from "../main-collection/_filter-sidebar/Provider";
-import type { SortOption } from "../../types/FilterParams.types";
+import { useFilter } from "../_filter-sidebar/Provider";
+import type { SortOption } from "../../../types/FilterParams.types";
 
 interface CollectionHeaderProps {
     title: string;
@@ -13,7 +13,6 @@ export function CollectionHeader({ title }: CollectionHeaderProps) {
         updateFilters({ sort: value });
     };
     
-
     return (
         <Header>
             <div>
@@ -66,10 +65,16 @@ const SortWrap = styled.div`
     display: flex;
     align-items: center;
     gap: 8px;
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-end;
+    }
 `;
 
 const SortLabel = styled.span`
     font-size: 10px;
+    font-family: var(--font-display);
     font-weight: 600;
     letter-spacing: 1.5px;
     text-transform: uppercase;

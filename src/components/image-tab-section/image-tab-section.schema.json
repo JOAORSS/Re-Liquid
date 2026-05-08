@@ -1,0 +1,48 @@
+{
+  "name": "Image with tab",
+  "class": "section-video image-text-t1 right-image-t1 tab-col-t3",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Color"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "primary", "label": "Primary" },
+        { "value": "secondary", "label": "Secondary" },
+        { "value": "tertiary", "label": "Tertiary" }
+      ],
+      "default": "primary"
+    },
+    {
+      "id": "text-b1",
+      "type": "text",
+      "label": "Button label"
+    },
+    {
+      "id": "link-b",
+      "type": "url",
+      "label": "Button link"
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "name": "Image with tab",
+      "category": "Text",
+      "blocks": [
+        {
+          "type": "richtext"
+        }
+      ]
+    }
+  ]
+}

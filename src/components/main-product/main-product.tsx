@@ -1,12 +1,11 @@
-import type { TProduct } from "../../types/store.types";
+import type { TBundleData, TBundleItem, TProduct, TShowcaseGallery } from "../../types/store.types";
 import { calculateProductRating, injectLiquid, injectLiquidRaw } from "../../util/shopify";
-import PhotoGallery from "./_photo-gallery";
+import PhotoGallery from "./_product-gallery";
 import { ProductInfo } from "./_product-detail";
 import "./main-product.css";
 import type { Settings } from "./main-product.types";
 
 export function MainProduct(props: { settings: Settings }) {
-    props;
 
     const product = injectLiquidRaw<TProduct>(`
     {%- if product -%}
@@ -82,7 +81,10 @@ export function MainProduct(props: { settings: Settings }) {
         if (item.media_type === "video") return true;
     }).map((item: any) => item.src);
 
-    const Badge = product.collections[0].title;
+    let Badge = "";
+    if (product.collections?.length > 0) {
+        Badge = product.collections[0].title;
+    }
     
     const benefits = [
         {
@@ -105,23 +107,43 @@ export function MainProduct(props: { settings: Settings }) {
     const sym = injectLiquid<string>(`cart.currency.symbol | json`);
 
     const stone = injectLiquidRaw<string[]>(`
-        {% assign all_tags = product.tags | join: ' ' %}
-        {% assign search_pool = product.title | append: ' ' | append: product.description | append: ' ' | append: all_tags | downcase %}
+        {%- assign all_tags = product.tags | join: ' ' -%}
+        {%- assign search_pool = product.title | append: ' ' | append: product.description | append: ' ' | append: all_tags | downcase -%}
 
-        {% assign stones_string = "African Bloodstone,African Turquoise,Agate,African Blood,Amazonite,Amber,Amethyst,Angelite,Apatite,Apophyllite,Aquamarine,Aragonite,Aura quartz,Aventurine,Azurite,Black Kyanite,Black Tourmaline,Bloodstone,Blue Aragonite,Blue Lace Agate,Blue Calcite,Blue Quartz,Blue Goldstone,Blue Tourmaline,Calcite,Caribbean Blue Calcite,Fire Quartz,Flower Agate,Fluorite,Fuchsite,Garnet,Golden Healer Quartz,Golden Obsidian,Grape Agate,Green Jade,Green Fluorite,Green Tourmaline,Green Jasper,Halite,Hematite,Howlite,Iolite,Jasper,Kyanite,Labradorite,Lapis Lazuli,Larimar,Lava Stone,Lemon Calcite,Lepidolite,Mahogany Obsidian,Malachite,Mica,Moldavite,Mookaite,Moonstone,oss Agate,bsidian,Ocean Jasper,Opal,Opalite,Orchid calcite,Peach Moonstone,Peach Selenite,Peacock,Pearl,Peridot,Pink Amethyst,Pink Opal,Pink Tourmaline,Picasso Jasper,Pistachio Calcite,Polychrome Jasper,Prehnite,Pyrite,hodochrosite,Rhodonite,Red Vein Jasper,Rose Calcite,Rose Quartz,Root Fluorite,Rutilated quartz,Ruby,Ruby Fuschite,Ruby Kyanite,uby Zoisite,Selenite,Serpentine,Shungite,Smoky Quartz,Sodalite,Strawberry Quartz,unstone,Silver Sheen Obsidian,Tangerine Quartz,Tigers Eye,Tourmalinated Quartz,Turquoise,Unakite,Vanadinite,White Agate,Yellow Calcite,Yellow Jasper,Carnelian,Celestine,Chevron Amethyst,Chrysocolla,Chrysoprase,Citrine,Clear Quartz,Dalmatian Jasper,Desert Rose,Dragon’s Blood Jasper,Emerald" %}
-        {% assign stones_array = stones_string | split: ',' %}
+        {%- assign stones_string = "African Bloodstone,African Turquoise,Agate,African Blood,Amazonite,Amber,Amethyst,Angelite,Apatite,Apophyllite,Aquamarine,Aragonite,Aura quartz,Aventurine,Azurite,Black Kyanite,Black Tourmaline,Bloodstone,Blue Aragonite,Blue Lace Agate,Blue Calcite,Blue Quartz,Blue Goldstone,Blue Tourmaline,Calcite,Caribbean Blue Calcite,Fire Quartz,Flower Agate,Fluorite,Fuchsite,Garnet,Golden Healer Quartz,Golden Obsidian,Grape Agate,Green Jade,Green Fluorite,Green Tourmaline,Green Jasper,Halite,Hematite,Howlite,Iolite,Jasper,Kyanite,Labradorite,Lapis Lazuli,Larimar,Lava Stone,Lemon Calcite,Lepidolite,Mahogany Obsidian,Malachite,Mica,Moldavite,Mookaite,Moonstone,Moss Agate,Obsidian,Ocean Jasper,Opal,Opalite,Orchid calcite,Peach Moonstone,Peach Selenite,Peacock,Pearl,Peridot,Pink Amethyst,Pink Opal,Pink Tourmaline,Picasso Jasper,Pistachio Calcite,Polychrome Jasper,Prehnite,Pyrite,Rhodochrosite,Rhodonite,Red Vein Jasper,Rose Calcite,Rose Quartz,Root Fluorite,Rutilated quartz,Ruby,Ruby Fuschite,Ruby Kyanite,Ruby Zoisite,Selenite,Serpentine,Shungite,Smoky Quartz,Sodalite,Strawberry Quartz,Sunstone,Silver Sheen Obsidian,Tangerine Quartz,Tigers Eye,Tourmalinated Quartz,Turquoise,Unakite,Vanadinite,White Agate,Yellow Calcite,Yellow Jasper,Carnelian,Celestine,Chevron Amethyst,Chrysocolla,Chrysoprase,Citrine,Clear Quartz,Dalmatian Jasper,Desert Rose,Dragon’s Blood Jasper,Emerald" -%}
+        {%- assign stones_array = stones_string | split: ',' -%}
 
-        [
-        {%- assign first_item = true -%}
+        {%- assign matched_string = "" -%}
         {%- for stone in stones_array -%}
             {%- assign stone_down = stone | downcase | strip -%}
             {%- if search_pool contains stone_down -%}
-                {%- unless first_item -%},{%- endunless -%}
-                "{{ stone | strip }}"
-                {%- assign first_item = false -%}
+                {%- assign matched_string = matched_string | append: stone | strip | append: "|||" -%}
             {%- endif -%}
         {%- endfor -%}
-        ]
+
+        {%- assign matched_array = matched_string | split: "|||" -%}
+        {%- assign final_matches = "" -%}
+
+        {%- for stone_a in matched_array -%}
+            {%- assign stone_a_down = stone_a | downcase | strip -%}
+            {%- assign is_substring = false -%}
+            
+            {%- for stone_b in matched_array -%}
+                {%- assign stone_b_down = stone_b | downcase | strip -%}
+                {%- if stone_a_down != stone_b_down and stone_b_down contains stone_a_down -%}
+                    {%- assign is_substring = true -%}
+                    {%- break -%}
+                {%- endif -%}
+            {%- endfor -%}
+            
+            {%- if is_substring == false -%}
+                {%- assign final_matches = final_matches | append: stone_a | strip | append: "|||" -%}
+            {%- endif -%}
+        {%- endfor -%}
+
+        {%- assign final_matches_array = final_matches | split: "|||" -%}
+
+        [ {%- for match in final_matches_array -%} "{{ match }}"{%- unless forloop.last -%},{%- endunless -%} {%- endfor -%} ]
     `);
 
     const subtitleText = injectLiquidRaw<string>(`
@@ -138,6 +160,118 @@ export function MainProduct(props: { settings: Settings }) {
         {% else %}
             "{{ product.tags | join: ' ✶ ' }}"
         {% endif %}
+    `);
+
+    const showCaseProducts = injectLiquidRaw<[TShowcaseGallery, TShowcaseGallery]>(`
+        {%- assign target_stone = final_matches_array[0] | downcase | strip -%}
+        {%- assign current_id = product.id -%}
+        {%- assign fallback_collection = product.collections.first -%}
+
+        {%- assign gallery_collection = fallback_collection -%}
+        {%- if section.settings.fixed_collection == true and section.settings.fixed_collection_collection != blank -%}
+            {%- assign gallery_collection = section.settings.fixed_collection_collection -%}
+        {%- endif -%}
+
+        {%- if section.settings.filter_by_crystal == true -%}
+            {%- assign gallery_title = "Other " | append: target_stone | append: " pieces" | strip -%}
+        {%- else -%}
+            {%- assign gallery_title = fallback_collection.title -%}
+        {%- endif -%}
+
+        [
+            {
+                "title": {{ gallery_title | json}},
+                "products": [
+                {%- if section.settings.filter_by_crystal == true -%}
+                    {%- paginate collections['all'].products by 250 -%}
+                        {%- assign matched_count = 0 -%}
+                        {%- for prod in collections['all'].products -%}
+                            {%- if prod.id == current_id -%}
+                                {%- continue -%}
+                            {%- endif -%}
+
+                            {%- assign inventory = prod.variants | map: 'inventory_quantity' | sum -%}
+                            
+                            {%- if inventory > 0 -%}
+                                {%- assign all_tags = prod.tags | join: ' ' -%}
+                                {%- assign search_pool = prod.title | append: ' ' | append: prod.description | append: ' ' | append: all_tags | downcase -%}
+                                
+                                {%- if search_pool contains target_stone -%}
+                                    {%- if matched_count > 0 -%},{%- endif -%}
+                                    {
+                                        "id": {{ prod.id | json }},
+                                        "title": {{ prod.title | json }},
+                                        "image": {{ prod.featured_image | img_url: 'master' | json }},
+                                        "imageHover": {{ prod.images[1] | img_url: 'master' | json }},
+                                        "price": {{ prod.price | money_without_currency | json }},
+                                        "url": {{ prod.url | json }}
+                                    }
+                                    {%- assign matched_count = matched_count | plus: 1 -%}
+                                    {%- if matched_count == 6 -%}
+                                        {%- break -%}
+                                    {%- endif -%}
+                                {%- endif -%}
+                            {%- endif -%}
+                        {%- endfor -%}
+                    {%- endpaginate -%}
+                {%- else -%}
+                    {%- assign matched_count = 0 -%}
+                    {%- for prod in fallback_collection.products -%}
+                        {%- if prod.id == current_id -%}
+                            {%- continue -%}
+                        {%- endif -%}
+
+                        {%- assign inventory = prod.variants | map: 'inventory_quantity' | sum -%}
+                        
+                        {%- if inventory > 0 -%}
+                            {%- if matched_count > 0 -%},{%- endif -%}
+                            {
+                                "id": {{ prod.id | json }},
+                                "title": {{ prod.title | json }},
+                                "image": {{ prod.featured_image | img_url: 'master' | json }},
+                                "imageHover": {{ prod.images[1] | img_url: 'master' | json }},
+                                "price": {{ prod.price | money_without_currency | json }},
+                                "url": {{ prod.url | json }}
+                            }
+                            {%- assign matched_count = matched_count | plus: 1 -%}
+                            {%- if matched_count == 6 -%}
+                                {%- break -%}
+                            {%- endif -%}
+                        {%- endif -%}
+                    {%- endfor -%}
+                {%- endif -%}
+                ]
+            },
+            {
+                "title": {{ gallery_collection.title | json }},
+                "products": [
+                {%- assign matched_count = 0 -%}
+                {%- for prod in gallery_collection.products -%}
+                    {%- if prod.id == current_id -%}
+                        {%- continue -%}
+                    {%- endif -%}
+
+                    {%- assign inventory = prod.variants | map: 'inventory_quantity' | sum -%}
+                    
+                    {%- if inventory > 0 -%}
+                        {%- if matched_count > 0 -%},{%- endif -%}
+                        {
+                            "id": {{ prod.id | json }},
+                            "title": {{ prod.title | json }},
+                            "image": {{ prod.featured_image | img_url: 'master' | json }},
+                            "imageHover": {{ prod.images[1] | img_url: 'master' | json }},
+                            "price": {{ prod.price | money_without_currency | json }},
+                            "url": {{ prod.url | json }}
+                        }
+                        {%- assign matched_count = matched_count | plus: 1 -%}
+                        {%- if matched_count == 6 -%}
+                            {%- break -%}
+                        {%- endif -%}
+                    {%- endif -%}
+                {%- endfor -%}
+                ]
+            }
+        ]
     `);
 
     function getStoneLink(stone: string): string {
@@ -165,10 +299,76 @@ export function MainProduct(props: { settings: Settings }) {
         title: stone[0],
         subtitle: "Discover the properties of this crystal" 
     };
+
+    let bundleItems: TBundleItem[] = [];
+
+    bundleItems.push({
+        name: `${product.title}`,
+        subtitle: `${subtitleText}`,
+        price: product.price,
+        image: images[0],
+        id: product.selected_or_first_available_variant.id
+    });
+
+    if (props.settings.bundle_use_default) {
+        if (props.settings.bundle_product !== "") {
+            const explicitBundle = injectLiquidRaw<any>(`
+                {%- assign b_prod = all_products['${props.settings.bundle_product}'] -%}
+                {%- if b_prod != blank and b_prod.available -%}
+                {
+                    "name": {{ b_prod.title | json }},
+                    "subtitle": {{ b_prod.description | strip_html | truncatewords: 10 | json }},
+                    "price": {{ b_prod.price | money_without_currency | json }},
+                    "image": {{ b_prod.featured_image | img_url: 'master' | json }},
+                    "id": {{ b_prod.selected_or_first_available_variant.id | json }}
+                }
+                {%- else -%}
+                null
+                {%- endif -%}
+            `);
+            
+            if (explicitBundle) {
+                bundleItems.push(explicitBundle);
+            }
+        } else { 
+            const metafieldBundles = injectLiquidRaw<any[]>(`
+                [
+                {%- assign bundle_metafield = product.metafields.custom.product_bundles.value -%}
+                {%- if bundle_metafield != blank -%}
+                    {%- assign is_first = true -%}
+                    {%- for b_prod in bundle_metafield -%}
+                        {%- if b_prod.available -%}
+                            {%- if is_first == false -%},{%- endif -%}
+                            {
+                                "name": {{ b_prod.title | json }},
+                                "subtitle": {{ b_prod.description | strip_html | truncatewords: 10 | json }},
+                                "price": {{ b_prod.price | money_without_currency | json }},
+                                "image": {{ b_prod.featured_image | img_url: 'master' | json }},
+                                "id": {{ b_prod.selected_or_first_available_variant.id | json }}
+                            }
+                            {%- assign is_first = false -%}
+                        {%- endif -%}
+                    {%- endfor -%}
+                {%- endif -%}
+                ]
+            `);
+
+            if (metafieldBundles && metafieldBundles.length > 0) {
+                bundleItems.push(...metafieldBundles);
+            }
+        }
+    }
+
+    const bundle: TBundleData = {
+        "items": bundleItems,
+        "discount": props.settings.bundle_discount        
+    }
     
     return (
         <div className="product-container">
-            <PhotoGallery images={images} alt={product.title} />
+            <div className="product-gallery-wrapper">
+                <PhotoGallery images={images} alt={product.title} />
+            </div>
             
             <ProductInfo  
                 title={product.title}
@@ -181,7 +381,7 @@ export function MainProduct(props: { settings: Settings }) {
                 couponLabel={props.settings.coupon_label}
                 shipping={props.settings.shipping_text}
                 descriptionTitle={props.settings.description_title}
-
+                bundle={bundle}
                 stoneTrigger={stoneTrigger}
                 subtitle={subtitleText}
                 stars={rating}
@@ -192,6 +392,13 @@ export function MainProduct(props: { settings: Settings }) {
                 code={code}
                 sym={sym}
             />
+
+            {showCaseProducts && (
+                <script type="application/json" id="shared-related-products-data">
+                    {JSON.stringify(showCaseProducts)}
+                </script>
+            )}
+
         </div>
     );
 }

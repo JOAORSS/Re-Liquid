@@ -1,4 +1,8 @@
 export interface Settings {
-  label: string;
-  link: string;
+  id: string;
+  type: string;
+  settings: {
+    label: string;
+    link: string;
+  }
 }

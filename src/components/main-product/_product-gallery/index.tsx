@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { styled } from "@linaria/react";
+import PhotoSwipeLightbox from "photoswipe/lightbox";
+import "photoswipe/dist/photoswipe.css";
 
 interface GalleryProps {
     images: string[];
@@ -8,11 +10,29 @@ interface GalleryProps {
 
 export default function PhotoGallery({ images, alt = "" }: GalleryProps) {
     const [active, setActive] = useState(0);
+    const wrapRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const lightbox = new PhotoSwipeLightbox({
+            gallery: wrapRef.current!,
+            children: "a.pswp-trigger",
+            pswpModule: () => import("photoswipe"),
+            bgOpacity: 0.85,
+        });
+        lightbox.init();
+        return () => lightbox.destroy();
+    }, []);
 
     return (
-        <Wrap>
+        <Wrap ref={wrapRef}>
             <Main>
-                <img src={images[active]} alt={alt} />
+                <a className="pswp-trigger"
+                    href={images[active]}
+                    data-pswp-width={1200}
+                    data-pswp-height={1200}
+                >
+                    <img src={images[active]} alt={alt} />
+                </a>
             </Main>
 
             <ThumbsWrap>
@@ -35,7 +55,7 @@ export default function PhotoGallery({ images, alt = "" }: GalleryProps) {
 
 const Wrap = styled.div`
     position: sticky;
-    top: 80px;
+    top: calc(80px + 14px)
     display: flex;
     flex-direction: column;
     width: 100%;

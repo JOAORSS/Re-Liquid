@@ -4,6 +4,12 @@
     {
       "type": "header",
       "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "out_stock_label",
+      "label": "Label who will appear when the collection dont have products",
+      "default": "No products found"
     }
   ]
 }

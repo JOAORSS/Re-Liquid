@@ -23,6 +23,8 @@ const breadcrumbItems = injectLiquidRaw<BreadcrumbItem[]>(`
         {%- elsif template.name == 'article' -%}
             , { "label": {{ blog.title | json }}, "url": {{ blog.url | json }} }
             , { "label": {{ article.title | json }} }
+        {%- elsif template.name == 'cart' -%}
+            , { "label": {{ 'cart.title' | t | json }} }
         {%- endif -%}
     ]
 `);
@@ -53,6 +55,7 @@ const Nav = styled.nav`
     align-items: center;
     gap: 6px;
     flex-wrap: wrap;
+    font-family: var(--font-display);
     max-width: var(--content-width);
     background-color: transparent;
     margin: 14px auto 14px;

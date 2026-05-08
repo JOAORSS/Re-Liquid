@@ -1,6 +1,8 @@
 import type { Settings } from "./main-header.types";
 import { injectLiquid } from '../../util/shopify';
 import "./main-header.css"
+import { useState } from "react";
+import { MobileNav } from "./mobile-nav";
 
 const ShopifyAccount = 'shopify-account' as any;
 
@@ -14,10 +16,12 @@ export function Header(props: { settings: Settings }) {
     const cartRoute       = injectLiquid<string>("routes.cart_url | json");
     const accountsEnabled = injectLiquid<boolean>("shop.customer_accounts_enabled | json");
 
+    const [openMobileMenu, setOpenMobileMenu] = useState(false);
+
     return (
         <>
         <header className="header"> 
-            <span className="hamburger">
+            <span className="hamburger" onClick={() => setOpenMobileMenu(true)}>
                 <span></span>
                 <span></span>
                 <span></span>
@@ -41,6 +45,7 @@ export function Header(props: { settings: Settings }) {
                 </a>
             </div>
         </header>
+        <MobileNav menuHandle={'main-menu'} open={openMobileMenu} onClose={() => setOpenMobileMenu(false)} />
         </>
     );
 }

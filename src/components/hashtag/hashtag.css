@@ -1,8 +1,6 @@
 
 .hashtag-link {
     width: 100%;
-    max-height: 250px;
-    max-width: 186px;
     transition: 0.3s;
     display: flex;
     align-items: center;
@@ -53,8 +51,8 @@
     margin: 0 auto;
 }
 
-@media (max-width: 764px) {
-    .hashtag-container {
+@media (max-width: 768px) {
+    .mobile-slider-container {
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: auto auto;
     }

@@ -1,16 +1,12 @@
 import { useState } from "react";
 import { styled } from "@linaria/react";
+import { addItemsToCart, injectLiquidRaw } from "../../../util/shopify";
+import { ProductBundle } from "../_product-bundle";
+import type { TBundleData } from "../../../types/store.types";
 
 interface BenefitProp {
     icon: string;
     label: string;
-}
-
-interface BundleItem {
-    name: string;
-    subtitle: string;
-    price: number;
-    image: string;
 }
 
 interface ProductInfoProps {
@@ -28,7 +24,7 @@ interface ProductInfoProps {
     shipping?: string;
     stoneTrigger?: { title: string; subtitle: string; targetId: string };
     benefits?: BenefitProp[];
-    bundle?: { items: BundleItem[]; discount: number };
+    bundle?: TBundleData;
     descriptionTitle?: string;
     description?: string;
     descriptionItems?: string[];
@@ -61,26 +57,49 @@ export function ProductInfo({
     installmentsDefault = 4
 }: ProductInfoProps) {
     const [copied, setCopied] = useState(false);
-    const [bundleSelected, setBundleSelected] = useState<Set<number>>(() => new Set(bundle?.items.map((_, i) => i) ?? []));
-
     const installment    = price / installmentsDefault;
-    const bundleTotal    = bundle?.items.reduce((acc, item, i) => bundleSelected.has(i) ? acc + item.price : acc, 0) ?? 0;
-    const bundleOriginal = bundle?.items.reduce((acc, item) => acc + item.price, 0) ?? 0;
-    const bundleSave     = bundleOriginal - bundleTotal * (1 - (bundle?.discount ?? 0) / 100);
-
-    const toggleBundle = (i: number) => {
-        setBundleSelected(prev => {
-            const next = new Set(prev);
-            next.has(i) ? next.delete(i) : next.add(i);
-            return next;
-        });
-    };
 
     const copyCoupon = () => {
         if (!couponCode) return;
         navigator.clipboard.writeText(couponCode);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
+    };
+
+    const [isAdding, setIsAdding] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+    // @ts-ignore
+    const [quantity, setQuantity] = useState(1);
+    // @ts-ignore
+    const [selectedBundles, setSelectedBundles] = useState<number[]>([]);
+
+    const currentVariantId = injectLiquidRaw<number>(`{{ product.selected_or_first_available_variant.id }}`);
+
+    const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        if (!currentVariantId) {
+            return; 
+        }
+
+        setIsAdding(true);
+
+        try {
+            await addItemsToCart(currentVariantId, quantity, selectedBundles);
+            
+            setIsSuccess(true);
+
+            const rootUrl = (window.Shopify && window.Shopify.routes && window.Shopify.routes.root)
+                ? window.Shopify.routes.root
+                : '/';
+
+            setTimeout(() => {
+                window.location.href = `${rootUrl}cart`;
+            }, 1000);
+
+        } catch (error) {
+            setIsAdding(false);
+        }
     };
 
     return (
@@ -149,7 +168,14 @@ export function ProductInfo({
                 </StoneTrigger>
             )}
 
-            <CtaBtn>Add to Cart — {sym}{price}</CtaBtn>
+            <CtaBtn
+                type="button"
+                onClick={handleAddToCart}
+                disabled={isAdding || isSuccess}
+                className={`react-btn-add ${isAdding ? 'is-adding' : ''} ${isSuccess ? 'is-added' : ''}`}
+            >
+                {isAdding ? "Adding..." : isSuccess ? "Added!" : `Add to Cart — ${sym}${price}`}
+            </CtaBtn>
 
             {benefits && benefits.length > 0 && (
                 <Benefits>
@@ -162,38 +188,8 @@ export function ProductInfo({
                 </Benefits>
             )}
 
-            {bundle && (
-                <BundleBox>
-                    <BundleHead>
-                        <h2>Create Your Bundle & Save</h2>
-                        <p>Add complementary pieces and get up to {bundle.discount}% off</p>
-                    </BundleHead>
-                    <BundleItems>
-                        {bundle.items.map((item, i) => (
-                            <BundleItemRow
-                                key={i}
-                                selected={bundleSelected.has(i)}
-                                onClick={() => toggleBundle(i)}
-                            >
-                                <BundleCheck selected={bundleSelected.has(i)}>
-                                    <svg viewBox="0 0 24 24" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                                </BundleCheck>
-                                <BundleThumb><img src={item.image} alt={item.name} /></BundleThumb>
-                                <BundleName>
-                                    <strong>{item.name}</strong>
-                                    <span>{item.subtitle}</span>
-                                </BundleName>
-                                <BundlePrice>{sym}{item.price}</BundlePrice>
-                            </BundleItemRow>
-                        ))}
-                    </BundleItems>
-                    <BundleTotal>
-                        <div>Bundle total</div>
-                        <BundleTotalPrice>{sym}{(bundleTotal * (1 - bundle.discount / 100)).toFixed(2)}</BundleTotalPrice>
-                        <div>You save {bundle.discount}% — {sym}{bundleSave}</div>
-                    </BundleTotal>
-                    <BundleCta>Add Bundle to Cart</BundleCta>
-                </BundleBox>
+            {bundle && bundle.items.length > 1 && (
+                <ProductBundle bundle={bundle} onAddBundle={addItemsToCart} />
             )}
 
             {(descriptionTitle || description || descriptionItems) && (
@@ -213,7 +209,9 @@ export function ProductInfo({
 }
 
 
-const Info = styled.div``;
+const Info = styled.div`
+    font-family: var(--font-display);
+`;
 
 const MetaTop = styled.div`
     display: flex;
@@ -299,7 +297,7 @@ const Price = styled.span`
     font-size: 28px;
     font-weight: 700;
     color: var(--dark);
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: var(--font-display);
 
     @media (max-width: 768px) { font-size: 24px; }
 `;
@@ -308,7 +306,7 @@ const PriceOld = styled.span`
     font-size: 16px;
     color: #ccc;
     text-decoration: line-through;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: var(--font-display);
 `;
 
 const PriceOff = styled.span`
@@ -324,7 +322,7 @@ const Installments = styled.div`
     font-size: 12px;
     color: var(--grey);
     margin-bottom: 22px;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: var(--font-display);
 `;
 
 const CouponBar = styled.div`
@@ -444,123 +442,19 @@ const BenefitItem = styled.div`
     }
 `;
 
-const BundleBox = styled.div`
-    background: var(--plum-light);
-    border-radius: 12px;
-    padding: 28px;
-    margin-bottom: 24px;
-
-    @media (max-width: 768px) { padding: 20px; }
-`;
-
-const BundleHead = styled.div`
-    text-align: center;
-    margin-bottom: 20px;
-    h2 { font-family: var(--font-display); font-size: 26px; font-weight: 400; color: var(--plum); }
-    p  { font-size: 12px; color: var(--grey); }
-`;
-
-const BundleItems = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-`;
-
-const BundleItemRow = styled.div<{ selected: boolean }>`
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 12px 16px;
-    background: #fff;
-    border-radius: 8px;
-    border: 2px solid ${({ selected }) => selected ? "var(--plum)" : "transparent"};
-    cursor: pointer;
-    transition: all .2s;
-
-    &:hover { border-color: var(--plum); }
-`;
-
-const BundleCheck = styled.div<{ selected: boolean }>`
-    width: 20px;
-    height: 20px;
-    border: 2px solid ${({ selected }) => selected ? "var(--plum)" : "#ddd"};
-    border-radius: 4px;
-    background: ${({ selected }) => selected ? "var(--plum)" : "transparent"};
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all .2s;
-
-    svg { width: 12px; height: 12px; stroke: #fff; fill: none; opacity: ${({ selected }) => selected ? 1 : 0}; }
-`;
-
-const BundleThumb = styled.div`
-    width: 48px;
-    height: 48px;
-    border-radius: 6px;
-    overflow: hidden;
-    flex-shrink: 0;
-    background: var(--light);
-    img { width: 100%; height: 100%; object-fit: cover; }
-`;
-
-const BundleName = styled.div`
-    flex: 1;
-    strong { font-size: 13px; display: block; color: var(--dark); }
-    span   { font-size: 11px; color: var(--grey); }
-`;
-
-const BundlePrice = styled.div`
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--plum);
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-`;
-
-const BundleTotal = styled.div`
-    text-align: center;
-    padding: 16px;
-    background: #fff;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    font-size: 12px;
-    color: var(--grey);
-`;
-
-const BundleTotalPrice = styled.div`
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--plum);
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    margin: 4px 0;
-`;
-
-const BundleCta = styled.button`
-    width: 100%;
-    padding: 14px;
-    background: var(--plum);
-    color: #fff;
-    border: none;
-    font-family: var(--font-body);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background .2s;
-
-    &:hover { background: var(--dark); }
-`;
-
 const Desc = styled.div`
     padding-top: 24px;
     border-top: 1px solid var(--border);
 
-    h3 { font-family: var(--font-display); font-size: 20px; font-weight: 500; margin-bottom: 12px; }
-    p  { font-size: 13px; color: #666; line-height: 1.8; margin-bottom: 12px; }
+    h3 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 500; margin-bottom: 12px; }
+    p  { font-size: 1rem; color: #666; line-height: 1.3; margin-bottom: 12px; }
     ul { padding-left: 18px; margin-bottom: 12px; }
-    li { font-size: 13px; color: #666; line-height: 1.8; margin-bottom: 4px; }
+    li { font-size: 1rem; color: #666; line-height: 1.8; margin-bottom: 4px; }
+
+    @media screen and (max-width: 768px) {
+        li { 
+            font-size: .875rem;
+            font-weight: 500;
+        }
+    }
 `;

@@ -1,0 +1,72 @@
+{
+    "type": "richtext",
+    "name": "Rich text",
+    "limit": 1,
+    "settings": [
+        {
+            "id": "title",
+            "type": "text",
+            "label": "Heading"
+        },
+        {
+            "id": "richtext",
+            "type": "richtext",
+            "label": "Text",
+            "default": "<p>Use this text to share information about your brand with your customers.</p>"
+        },
+        {
+            "type": "header",
+            "content": "Title 1"
+        },
+        {
+            "id": "title-ta",
+            "type": "text",
+            "label": "Heading"
+        },
+        {
+            "type": "header",
+            "content": "Info 1"
+        },
+        {
+            "id": "text-ta",
+            "type": "richtext",
+            "label": "Info"
+        },
+        {
+            "type": "header",
+            "content": "Title 2"
+        },
+        {
+            "id": "title-tb",
+            "type": "text",
+            "label": "Heading"
+        },
+        {
+            "type": "header",
+            "content": "Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+        },
+        {
+            "type": "header",
+            "content": "Title 3"
+        },
+        {
+            "id": "title-tc",
+            "type": "text",
+            "label": "Heading"
+        },
+        {
+            "type": "header",
+            "content": "Info 3"
+        },
+        {
+            "id": "text-tc",
+            "type": "richtext",
+            "label": "Info"
+        }
+    ]
+}

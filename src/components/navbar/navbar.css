@@ -40,10 +40,6 @@
     text-decoration: none;
 }
 
-.navbar a:hover {
-    color: var(--plum);
-}
-
 .nav-item {
     display: flex;
     align-items: center;
@@ -86,8 +82,12 @@
 }
 
 .nav-dropdown a:hover,
-.nav-dropdown a.active {
+.nav-dropdown a.active,
+.navbar a:hover,
+.navbar a.active {
   color: var(--plum);
+  border-bottom: 2px solid var(--dark);
+  margin-bottom: -1px;
 }
 
 .mobile-nav  { 

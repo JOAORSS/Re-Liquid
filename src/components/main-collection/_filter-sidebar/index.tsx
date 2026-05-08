@@ -9,6 +9,7 @@ export default function FilterSidebar() {
     const [priceMax, setPriceMax] = useState(filters.priceMax ?? "");
     const [typesExpanded, setTypesExpanded] = useState(false);
     const [stonesExpanded, setStonesExpanded] = useState(false);
+    const [isMobileExpanded, setIsMobileExpanded] = useState(false);
 
     const inStockProducts = allProducts.filter(p => p.quantity >= 1);
 
@@ -51,82 +52,88 @@ export default function FilterSidebar() {
 
     return (
         <SidebarContainer>
+            <MobileToggle onClick={() => setIsMobileExpanded(!isMobileExpanded)}>
+                <span>Filters</span>
+                <span>{isMobileExpanded ? "-" : "+"}</span>
+            </MobileToggle>
 
-            <Block>
-                <BlockTitle>Crystal</BlockTitle>
-                <BlockList>
-                    <StoneButton
-                        className={"active"}
-                        onClick={() => updateFilters({ stones: [] })}
-                    >
-                        <StoneAll>✦</StoneAll>
-                        <StoneLabel>All Crystals</StoneLabel>
-                        <StoneCount>{filteredProducts.length}</StoneCount>
-                    </StoneButton>
-
-                    {visibleStones.map((s, i) => (
+            <FilterContent isExpanded={isMobileExpanded}>
+                <Block>
+                    <BlockTitle>Crystal</BlockTitle>
+                    <BlockList>
                         <StoneButton
-                            key={i}
-                            className={filters.stones.includes(s.toLowerCase()) ? "active" : ""}
-                            onClick={() => toggleStone(s.toLowerCase())}
+                            className={"active"}
+                            onClick={() => updateFilters({ stones: [] })}
                         >
-                            <StoneLabel>{s}</StoneLabel>
-                            <StoneCount>{stoneCounts[s]}</StoneCount>
+                            <StoneAll>✦</StoneAll>
+                            <StoneLabel>All Crystals</StoneLabel>
+                            <StoneCount>{filteredProducts.length}</StoneCount>
                         </StoneButton>
-                    ))}
-                </BlockList>
-                {stoneOptions.length > MAX_VISIBLE_STONES && (
-                    <ToggleMoreButton onClick={() => setStonesExpanded(!stonesExpanded)}>
-                        {stonesExpanded ? "Show less" : `+ Show ${hiddenStonesCount} more`}
-                    </ToggleMoreButton>
-                )}
-            </Block>
 
-            <Block>
-                <BlockTitle>Type</BlockTitle>
-                <BlockList> 
-                    {visibleTypes.map((type, i) => (
-                        <TypeContainer key={i}>
-                            <TypeCheckbox
-                                type="checkbox"
-                                checked={filters.types.includes(type)}
-                                onChange={() => toggleType(type)}
-                            />
-                            <TypeLabel>
-                                {type}
-                                <TypeCount>{typeCounts[type]}</TypeCount>
-                            </TypeLabel>
-                        </TypeContainer>
-                    ))}
-                </BlockList>
-                {typeOptions.length > MAX_VISIBLE_TYPES && (
-                    <ToggleMoreButton onClick={() => setTypesExpanded(!typesExpanded)}>
-                        {typesExpanded ? "Show less" : `+ Show ${hiddenTypesCount} more`}
-                    </ToggleMoreButton>
-                )}
-            </Block>
+                        {visibleStones.map((s, i) => (
+                            <StoneButton
+                                key={i}
+                                className={filters.stones.includes(s.toLowerCase()) ? "active" : ""}
+                                onClick={() => toggleStone(s.toLowerCase())}
+                            >
+                                <StoneLabel>{s}</StoneLabel>
+                                <StoneCount>{stoneCounts[s]}</StoneCount>
+                            </StoneButton>
+                        ))}
+                    </BlockList>
+                    {stoneOptions.length > MAX_VISIBLE_STONES && (
+                        <ToggleMoreButton onClick={() => setStonesExpanded(!stonesExpanded)}>
+                            {stonesExpanded ? "Show less" : `+ Show ${hiddenStonesCount} more`}
+                        </ToggleMoreButton>
+                    )}
+                </Block>
 
-            <Block>
-                <BlockTitle>Price (AUD)</BlockTitle>
-                <PriceContainer>
-                    <PriceInput
-                        type="number"
-                        placeholder="$0"
-                        min={0}
-                        value={priceMin}
-                        onChange={e => setPriceMin(e.target.value)}
-                    />
-                    <PriceDash>—</PriceDash>
-                    <PriceInput
-                        type="number"
-                        placeholder="$999"
-                        min={0}
-                        value={priceMax}
-                        onChange={e => setPriceMax(e.target.value)}
-                    />
-                </PriceContainer>
-                <PriceApply onClick={applyPrice}>Apply</PriceApply>
-            </Block>
+                <Block>
+                    <BlockTitle>Type</BlockTitle>
+                    <BlockList> 
+                        {visibleTypes.map((type, i) => (
+                            <TypeContainer key={i}>
+                                <TypeCheckbox
+                                    type="checkbox"
+                                    checked={filters.types.includes(type)}
+                                    onChange={() => toggleType(type)}
+                                />
+                                <TypeLabel>
+                                    {type}
+                                    <TypeCount>{typeCounts[type]}</TypeCount>
+                                </TypeLabel>
+                            </TypeContainer>
+                        ))}
+                    </BlockList>
+                    {typeOptions.length > MAX_VISIBLE_TYPES && (
+                        <ToggleMoreButton onClick={() => setTypesExpanded(!typesExpanded)}>
+                            {typesExpanded ? "Show less" : `+ Show ${hiddenTypesCount} more`}
+                        </ToggleMoreButton>
+                    )}
+                </Block>
+
+                <Block>
+                    <BlockTitle>Price (AUD)</BlockTitle>
+                    <PriceContainer>
+                        <PriceInput
+                            type="number"
+                            placeholder="$0"
+                            min={0}
+                            value={priceMin}
+                            onChange={e => setPriceMin(e.target.value)}
+                        />
+                        <PriceDash>—</PriceDash>
+                        <PriceInput
+                            type="number"
+                            placeholder="$999"
+                            min={0}
+                            value={priceMax}
+                            onChange={e => setPriceMax(e.target.value)}
+                        />
+                    </PriceContainer>
+                    <PriceApply onClick={applyPrice}>Apply</PriceApply>
+                </Block>
+            </FilterContent>
         </SidebarContainer>
     );
 }
@@ -138,6 +145,7 @@ const SidebarContainer = styled.aside`
     flex-direction: column;
     gap: 28px;
     position: sticky;
+    font-family: var(--font-display);
     top: calc(80px + 14px);
     align-self: flex-start;
     max-height: calc(100vh - 80px - 34px);
@@ -148,6 +156,39 @@ const SidebarContainer = styled.aside`
         position: static;
         max-height: none;
         overflow-y: visible;
+        gap: 16px;
+    }
+`;
+
+const MobileToggle = styled.button`
+    display: none;
+
+    @media (max-width: 768px) {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--plum-light, #f4f0f5);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-family: var(--font-display);
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--dark);
+        cursor: pointer;
+    }
+`;
+
+const FilterContent = styled.div<{ isExpanded: boolean }>`
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+
+    @media (max-width: 768px) {
+        display: ${props => (props.isExpanded ? "flex" : "none")};
     }
 `;
 
@@ -198,14 +239,6 @@ const StoneButton = styled.button`
         background: var(--plum-light);
     }
 `;
-
-// const StoneImage = styled.img`
-//     width: 22px;
-//     height: 22px;
-//     border-radius: 50%;
-//     object-fit: cover;
-//     flex-shrink: 0;
-// `;
 
 const StoneAll = styled.span`
     width: 22px;

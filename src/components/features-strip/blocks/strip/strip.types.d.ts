@@ -1,5 +1,9 @@
 export interface Settings {
-  svg_html: string;
-  title: string;
-  subtitle: string;
+  id: string;
+  type: string;
+  settings: {
+    svg_html: string;
+    title: string;
+    subtitle: string;
+  }
 }
