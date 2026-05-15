@@ -7,17 +7,6 @@
       "label": "Main Image"
     },
     {
-      "type": "select",
-      "id": "color_scheme",
-      "label": "Color Scheme",
-      "options": [
-        { "value": "primary", "label": "Primary" },
-        { "value": "secondary", "label": "Secondary" },
-        { "value": "tertiary", "label": "Tertiary" }
-      ],
-      "default": "primary"
-    },
-    {
       "type": "text",
       "id": "text-b1",
       "label": "Bottom Link Text"

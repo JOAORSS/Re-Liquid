@@ -56,7 +56,7 @@ export function PageRichtextSection({ id, settings, blocks }: { id: string, sett
 
 const HeaderImage = styled.img`
     margin-top: 16px;
-    max-height: 162px;
+    max-height: 200px;
     height: 100%;
     width: auto;
     border-radius: 4px;

@@ -1,6 +1,7 @@
 .features {
   background: var(--background);
   padding: 0;
+  padding-top: 36px;
 }
 .features-in {
   max-width: var(--max-width);

@@ -1,0 +1,135 @@
+.urt-section {
+    width: 100%;
+    padding: 80px 20px;
+    box-sizing: border-box;
+}
+
+.urt-container {
+    max-width: var(--page-width, 1360px);
+    margin: 0 auto;
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+.urt-layout--left {
+    flex-direction: row;
+}
+
+.urt-layout--right {
+    flex-direction: row-reverse;
+}
+
+.urt-layout--center {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 32px;
+}
+
+.urt-media--title .urt-media-block {
+    flex: 0 0 calc(25% - 30px);
+}
+
+.urt-media--title .urt-content-block {
+    flex: 0 0 calc(75% - 30px);
+}
+
+.urt-media--image .urt-media-block {
+    flex: 0 0 calc(33.333% - 30px);
+}
+
+.urt-media--image .urt-content-block {
+    flex: 0 0 calc(66.666% - 30px);
+}
+
+.urt-layout--center .urt-media-block,
+.urt-layout--center .urt-content-block {
+    flex: 1 1 100%;
+    width: 100%;
+    max-width: 800px;
+}
+
+.urt-title {
+    margin: 0;
+    font-family: var(--font-heading, inherit);
+    font-size: 32px;
+    line-height: 1.2;
+    font-weight: 400;
+}
+
+.urt-title-center {
+    margin: 0 0 24px 0;
+    font-family: var(--font-heading, inherit);
+    font-size: 36px;
+    line-height: 1.2;
+    font-weight: 400;
+}
+
+.urt-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.urt-html p {
+    margin-top: 0;
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+
+.urt-html h5 {
+    margin-top: 24px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.urt-cta {
+    display: inline-block;
+    margin-top: 24px;
+    padding: 12px 32px;
+    background-color: var(--color-primary-button, #333);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.2s;
+}
+
+.urt-cta:hover {
+    background-color: var(--color-primary-button-hover, #000);
+}
+
+.urt-blocks-container {
+    max-width: 50%;
+    min-width: 320px;
+    margin: 60px auto 0 auto;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .urt-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 32px;
+    }
+
+    .urt-media-block,
+    .urt-content-block {
+        flex: 1 1 100% !important;
+        width: 100%;
+    }
+
+    .urt-blocks-container {
+        max-width: 100%;
+        margin-top: 40px;
+        padding: 0 10px;
+    }
+
+    .urt-section {
+        padding: 40px 0;
+    }
+}

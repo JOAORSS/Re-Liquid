@@ -1,0 +1,72 @@
+{
+  "name": "Universal Rich Text",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#333333"
+    },
+    {
+      "type": "select",
+      "id": "layout_position",
+      "label": "Layout Position",
+      "options": [
+        { "value": "left", "label": "Media on Left" },
+        { "value": "right", "label": "Media on Right" },
+        { "value": "center", "label": "Centered" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "media_type",
+      "label": "Media Type",
+      "options": [
+        { "value": "title", "label": "Side Title" },
+        { "value": "image", "label": "Side Image" },
+        { "value": "none", "label": "None (Text Only)" }
+      ],
+      "default": "title"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Your section heading here"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "richtext",
+      "id": "richtext",
+      "label": "Text content",
+      "default": "<p>Share details about your brand, products, or policies with your customers.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Universal Rich Text"
+    }
+  ]
+}

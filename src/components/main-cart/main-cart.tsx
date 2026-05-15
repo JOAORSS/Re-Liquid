@@ -166,6 +166,7 @@ const EmptyCartContainer = styled.div`
     text-align: center;
     padding: 80px 20px;
     font-family: var(--font-body);
+    min-height: 50vh;  
 
     h2 {
         font-family: var(--font-display);

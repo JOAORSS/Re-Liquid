@@ -4,5 +4,4 @@ export interface Settings {
     image: string | null;
     cta_url: string;
     cta_text: string;
-    color_scheme: 'primary' | 'secondary' | 'tertiary';
 }

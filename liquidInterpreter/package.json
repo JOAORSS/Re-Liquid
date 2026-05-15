@@ -2,13 +2,83 @@
   "name": "liquid-injector",
   "displayName": "Liquid Injector",
   "version": "1.0.0",
+  "publisher": "joaovrs",
+  "main": "./out/extension",
   "engines": {
     "vscode": "^1.80.0"
   },
   "categories": [
     "Programming Languages"
   ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.0.0"
+  },
   "contributes": {
+    "commands": [
+      {
+        "command": "liquid-injector.buildCurrent",
+        "title": "Build Current Component",
+        "icon": "$(run)",
+        "category": "Liquid"
+      },
+      {
+        "command": "liquid-injector.buildTypes",
+        "title": "Build Types",
+        "icon": "$(symbol-class)",
+        "category": "Liquid"
+      },
+      {
+        "command": "liquid-injector.buildAll",
+        "title": "Build All",
+        "icon": "$(refresh)",
+        "category": "Liquid"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "liquid-injector.buildCurrent",
+        "key": "ctrl+shift+alt+b",
+        "when": "editorFocus"
+      },
+      {
+        "command": "liquid-injector.buildTypes",
+        "key": "ctrl+shift+alt+t",
+        "when": "editorFocus"
+      },
+      {
+        "command": "liquid-injector.buildAll",
+        "key": "ctrl+shift+alt+a",
+        "when": "editorFocus"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "liquid-injector.buildCurrent",
+          "when": "resourcePath =~ /src.components./",
+          "group": "navigation@100"
+        },
+        {
+          "command": "liquid-injector.buildTypes",
+          "when": "resourcePath =~ /src.components./",
+          "group": "navigation@101"
+        },
+        {
+          "command": "liquid-injector.buildAll",
+          "when": "resourcePath =~ /src.components./",
+          "group": "navigation@102"
+        }
+      ]
+    },
     "grammars": [
       {
         "scopeName": "inline.liquid-injection",

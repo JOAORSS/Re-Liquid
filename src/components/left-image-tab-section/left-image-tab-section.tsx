@@ -11,14 +11,6 @@ const image = injectLiquidRaw<string>(`
     {% endif %}
 `);
 
-const imageBlock = injectLiquidRaw<string>(`
-    {% if block.settings.image != blank %}
-        {{ block.settings.image | img_url: 'master' | json }}
-    {% else %}
-        ""
-    {% endif %}
-`);
-
 export function LeftImageTabSection({ settings, blocks, imageRight = false }: { settings: Settings, blocks: BlockSettings[], imageRight?: boolean }) {
     return (
         <SectionContainer>
@@ -42,10 +34,10 @@ export function LeftImageTabSection({ settings, blocks, imageRight = false }: { 
                                     </Accordion>
                                 }
 
-                                {block.settings['title-tb'] != "" && block.settings['title-tb'] != "" &&
+                                {block.settings.image != "" &&
                                     <Accordion>
                                         <summary>{block.settings['title-tb']}</summary>
-                                        <AccordionContent>{imageBlock}</AccordionContent>
+                                        <AccordionContent><img src={block.settings.image!} style={{ aspectRatio: '4/3', width: '100%' }}  alt="chakra" /></AccordionContent>
                                     </Accordion>
                                 }
 

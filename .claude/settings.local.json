@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\JOAOVRS\\\\Documents\\\\VsCode\\\\Nextt\\\\shiny-pdp\\\\liquidInterpreter\" -Recurse -Force)",
+      "Bash(Select-Object FullName, PSIsContainer)",
+      "Bash(Sort-Object FullName)",
+      "Bash(npm run *)",
+      "Bash(npx @vscode/vsce package --no-dependencies)"
+    ]
+  }
+}

@@ -4,15 +4,33 @@ import { FilterProvider, useFilter } from "./_filter-sidebar/Provider";
 import Gallery from "../_gallery";
 import { ProductCard } from "../_product-card";
 import type { Settings } from "./main-collection.types";
+import { useShopifyData } from "../../util/ShopifyDataContext";
 import "./main-collection.css";
+import { injectLiquidRaw } from "../../util/shopify";
+import type { TBasicProduct } from "../../types/store.types";
 
-export function Collection(props: { settings: Settings }) {
-    const products = window.__shopifyData__.collection?.products ?? [];
-    const title = window.__shopifyData__.collection?.title ?? "";
+const IsSearchPage = injectLiquidRaw<boolean>(`{% if template.name == 'search' %}true{% else %}false{% endif %}`);
+
+export function Collection(props: { settings: Settings, searchProducts?: TBasicProduct[] }) {
+
+    const { collection } = useShopifyData();
+
+    let products = [] as TBasicProduct[];
+    let title = "";
+
+    if (IsSearchPage) {
+        products = props.searchProducts ?? [];
+    } else {
+        products = collection?.products ?? [];
+        title = collection?.title ?? "";
+    }
+
+    console.log(products);
+    
 
     return (
         <FilterProvider products={products}>
-            <CollectionHeader title={title} />
+            {!IsSearchPage && <CollectionHeader title={title} />}
             <div className="collection-layout">
                 <FilterSidebar />
                 <CollectionGallery settings={props.settings} />

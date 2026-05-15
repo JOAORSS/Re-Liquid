@@ -7,6 +7,9 @@ export default interface ShopifyData {
     title: string;
     products: TBasicProduct[];
   };
+  searchProducts: {
+    products: TBasicProduct[];
+  };
 }
 
 

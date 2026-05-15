@@ -4,20 +4,72 @@
     "settings": [
         {
             "type": "header",
-            "content": "Image banner"
+            "content": "1 - Image banner"
         },
         {
             "type": "image_picker",
-            "id": "image",
+            "id": "image_1",
             "label": "Image"
         },
         {
+            "type": "url",
+            "id": "action_url_1",
+            "label": "Action URL"
+        },
+        {
             "type": "header",
-            "content": "Action"
+            "content": "2 - Image banner"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_2",
+            "label": "Image"
         },
         {
             "type": "url",
-            "id": "action_url",
+            "id": "action_url_2",
+            "label": "Action URL"
+        },
+        {
+            "type": "header",
+            "content": "3 - Image banner"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_3",
+            "label": "Image"
+        },
+        {
+            "type": "url",
+            "id": "action_url_3",
+            "label": "Action URL"
+        },
+        {
+            "type": "header",
+            "content": "4 - Image banner"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_4",
+            "label": "Image"
+        },
+        {
+            "type": "url",
+            "id": "action_url_4",
+            "label": "Action URL"
+        },
+        {
+            "type": "header",
+            "content": "5 - Image banner"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_5",
+            "label": "Image"
+        },
+        {
+            "type": "url",
+            "id": "action_url_5",
             "label": "Action URL"
         }
     ]

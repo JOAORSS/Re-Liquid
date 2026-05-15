@@ -23,8 +23,8 @@
             "label": "Tab 1 Title"
         },
         {
-            "type": "richtext",
             "id": "text-ta",
+            "type": "richtext",
             "label": "Tab 1 Content"
         },
         {
